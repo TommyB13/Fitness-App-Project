@@ -1,0 +1,63 @@
+{
+	"extends": "airbnb",
+	"parser": "babel-eslint",
+	"env": {
+		"browser": true,
+		"es6": true,
+		"node": true
+	},
+	"plugins": ["import", "react"],
+	"parserOptions": {
+		"ecmaVersion": 6,
+		"sourceType": "module",
+		"ecmaFeatures": {
+			"jsx": true,
+			"experimentalObjectRestSpread": true
+		}
+	},
+	"rules": {
+		"arrow-parens": ["error", "as-needed"],
+		"no-multi-spaces": [
+			"error",
+			{ "exceptions": { "ImportDeclaration": true } }
+		],
+		"indent": [2, "tab", { "SwitchCase": 1 }],
+		"no-tabs": 0,
+		"no-console": 0,
+		"no-underscore-dangle": 0,
+		"no-mixed-operators": 0,
+		"no-confusing-arrow": "off",
+		"no-unused-vars": "off",
+		"react/jsx-indent": [2, "tab"],
+		"react/jsx-indent-props": [2, "tab"],
+		"react/prop-types": 0,
+		"react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+		"react/jsx-curly-newline": "off",
+		"react/jsx-props-no-spreading": "off",
+		"import/prefer-default-export": 0,
+		"import/no-extraneous-dependencies": 0,
+		"import/no-unresolved": 0,
+		"import/extensions": 0,
+		"implicit-arrow-linebreak": "off",
+		"object-curly-newline": "off",
+		"operator-linebreak": "off",
+		"max-len": [
+			2,
+			110,
+			4,
+			{
+				"ignoreUrls": true,
+				"ignoreComments": false,
+				"ignoreRegExpLiterals": true,
+				"ignoreStrings": true,
+				"ignoreTemplateLiterals": true
+			}
+		],
+		"jsx-a11y/no-static-element-interactions": 0,
+		"linebreak-style": ["error", "unix"],
+		"quotes": [2, "single"],
+		"import/no-import-module-exports": 0,
+		"react/no-unstable-nested-components": "off",
+		"react/jsx-wrap-multilines": "off"
+	}
+}
