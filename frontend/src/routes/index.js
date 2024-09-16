@@ -7,7 +7,7 @@ import App from 'layouts/App';
 
 import routePath from 'constants/path';
 
-import AuthRoute from 'utils/hoc/AuthRoute';
+import ProtectedRoute from 'utils/hoc/ProtectedRoute';
 
 import { HomePage } from 'layouts/Home';
 import { LoginPage } from 'layouts/Login';
@@ -40,9 +40,9 @@ function AppRoutes() {
 					<Route
 						path={routePath.homepage}
 						element={
-							<AuthRoute>
+							<ProtectedRoute>
 								<HomePage />
-							</AuthRoute>
+							</ProtectedRoute>
 						}
 					/>
 				</Routes>
