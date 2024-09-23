@@ -1,11 +1,16 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+
+import routePath from 'constants/path';
 
 import styles from './styles.module.scss';
 
 function Header() {
 	return (
 		<div className={styles.wrapper}>
-			<h1>Navigation</h1>
+			<h1>
+				<Link to={routePath.homepage}>Navigation</Link>
+			</h1>
 		</div>
 	);
 }
