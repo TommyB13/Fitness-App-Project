@@ -39,4 +39,5 @@ const mapHooksToState = state => state.routing;
 
 export const useRouting = () => useRedux(mapHooksToState, { pushRoute, replaceRoute });
 
+// eslint-disable-next-line
 export default { reducer };

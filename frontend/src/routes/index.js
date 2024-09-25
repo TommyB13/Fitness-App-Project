@@ -2,15 +2,13 @@ import React from 'react';
 import { HashRouter, BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import history from 'store/history';
-
 import App from 'layouts/App';
-
 import routePath from 'constants/path';
-
+import { AuthProvider } from 'utils/hook/useAuth';
 import ProtectedRoute from 'utils/hoc/ProtectedRoute';
 
 import { HomePage } from 'layouts/Home';
-import { LoginPage } from 'layouts/Login';
+import { ProfilePage } from 'layouts/Profile';
 
 import Header from 'components/organisms/Header';
 
@@ -28,24 +26,26 @@ function AppRoutes() {
 	return (
 		<RouterWrapper>
 			<App>
-				{/* Navbar */}
-				<Header />
+				<AuthProvider>
+					{/* Navbar */}
+					<Header />
 
-				{/* Routes */}
-				<Routes>
-					{/* Non-protected - Anyone has access */}
-					<Route path={routePath.login} element={<LoginPage />} />
+					{/* Routes */}
+					<Routes>
+						{/* Non-protected - Anyone has access */}
+						<Route path={routePath.homepage} element={<HomePage />} />
 
-					{/* Protected - Needs to login */}
-					<Route
-						path={routePath.homepage}
-						element={
-							<ProtectedRoute>
-								<HomePage />
-							</ProtectedRoute>
-						}
-					/>
-				</Routes>
+						{/* Protected - Needs to login */}
+						<Route
+							path={routePath.profile}
+							element={
+								<ProtectedRoute>
+									<ProfilePage />
+								</ProtectedRoute>
+							}
+						/>
+					</Routes>
+				</AuthProvider>
 			</App>
 		</RouterWrapper>
 	);
