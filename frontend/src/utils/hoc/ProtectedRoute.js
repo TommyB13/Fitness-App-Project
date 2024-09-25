@@ -9,7 +9,7 @@ function ProtectedRoute({ children }) {
 
 	if (!user) {
 		// user is not authenticated
-		return <Navigate to={routePath.login} />;
+		return <Navigate to={routePath.homepage} />;
 	}
 
 	return children;

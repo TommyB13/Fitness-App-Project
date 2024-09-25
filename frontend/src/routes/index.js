@@ -8,7 +8,6 @@ import { AuthProvider } from 'utils/hook/useAuth';
 import ProtectedRoute from 'utils/hoc/ProtectedRoute';
 
 import { HomePage } from 'layouts/Home';
-import { LoginPage } from 'layouts/Login';
 import { ProfilePage } from 'layouts/Profile';
 
 import Header from 'components/organisms/Header';
@@ -35,7 +34,6 @@ function AppRoutes() {
 					<Routes>
 						{/* Non-protected - Anyone has access */}
 						<Route path={routePath.homepage} element={<HomePage />} />
-						<Route path={routePath.login} element={<LoginPage />} />
 
 						{/* Protected - Needs to login */}
 						<Route

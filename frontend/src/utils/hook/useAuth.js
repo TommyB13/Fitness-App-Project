@@ -28,6 +28,7 @@ function AuthProvider({ children }) {
 			login,
 			logout,
 		}),
+		// eslint-disable-next-line
 		[user],
 	);
 
