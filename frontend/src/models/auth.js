@@ -98,6 +98,7 @@ const reducer = {
 			SET_LOGOUT: state => ({
 				...state,
 
+				token: defaultTokenData,
 				isLogin: false,
 			}),
 		},
