@@ -4,7 +4,6 @@ import { HashRouter, BrowserRouter, Routes, Route } from 'react-router-dom';
 import history from 'store/history';
 import App from 'layouts/App';
 import routePath from 'constants/path';
-import { AuthProvider } from 'utils/hook/useAuth';
 import ProtectedRoute from 'utils/hoc/ProtectedRoute';
 
 import { HomePage } from 'layouts/Home';
@@ -26,26 +25,24 @@ function AppRoutes() {
 	return (
 		<RouterWrapper>
 			<App>
-				<AuthProvider>
-					{/* Navbar */}
-					<Header />
+				{/* Navbar */}
+				<Header />
 
-					{/* Routes */}
-					<Routes>
-						{/* Non-protected - Anyone has access */}
-						<Route path={routePath.homepage} element={<HomePage />} />
+				{/* Routes */}
+				<Routes>
+					{/* Non-protected - Anyone has access */}
+					<Route path={routePath.homepage} element={<HomePage />} />
 
-						{/* Protected - Needs to login */}
-						<Route
-							path={routePath.profile}
-							element={
-								<ProtectedRoute>
-									<ProfilePage />
-								</ProtectedRoute>
-							}
-						/>
-					</Routes>
-				</AuthProvider>
+					{/* Protected - Needs to login */}
+					<Route
+						path={routePath.profile}
+						element={
+							<ProtectedRoute>
+								<ProfilePage />
+							</ProtectedRoute>
+						}
+					/>
+				</Routes>
 			</App>
 		</RouterWrapper>
 	);
