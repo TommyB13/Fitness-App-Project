@@ -6,9 +6,13 @@ import Routes from './routes';
 import configureStore from './store';
 import reportWebVitals from './reportWebVitals';
 
+import { loadConfigFromLocalStorage } from 'utils/external';
+
 import 'styles/global.scss';
 
 const store = configureStore({});
+
+loadConfigFromLocalStorage(store);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
