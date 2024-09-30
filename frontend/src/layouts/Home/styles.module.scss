@@ -3,6 +3,8 @@
 
 .homeLayout {
 	display: flex;
+	flex-direction: column;
 	margin-top: 64px;
 	height: calc(100vh - 64px);
+	padding: 8px 16px;
 }

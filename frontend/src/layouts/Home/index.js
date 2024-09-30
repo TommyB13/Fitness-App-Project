@@ -10,21 +10,26 @@ import routePath from 'constants/path';
 import styles from './styles.module.scss';
 
 function HomePage() {
-	const [{ search }] = useRouting();
+	const [{ search }, { replaceRoute }] = useRouting();
 	const { code } = qs.parse(search, { ignoreQueryPrefix: true });
 
 	const [{ isLogin }, { getIdToken, getAccessToken, logout }] = useAuth();
 
-	useEffect(() => {
+	async function asyncGetAccessToken() {
 		if (code) {
-			getAccessToken(code);
+			await getAccessToken(code);
+			await replaceRoute({ search: '' });
 		}
+	}
+
+	useEffect(() => {
+		asyncGetAccessToken();
 	}, [code]);
 
 	return (
 		<div className={styles.homeLayout}>
-			Home
-			<div>
+			<h2>Home</h2>
+			<div className={styles.contentWrapper}>
 				{isLogin ? (
 					<button type="button" onClick={logout}>
 						Logout
@@ -35,7 +40,7 @@ function HomePage() {
 					</button>
 				)}
 			</div>
-			<Link to={routePath.profile}>Profile</Link>
+			{isLogin && <Link to={routePath.profile}>Profile</Link>}
 		</div>
 	);
 }
