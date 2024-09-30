@@ -9,7 +9,7 @@ function Header() {
 	return (
 		<div className={styles.wrapper}>
 			<h1>
-				<Link to={routePath.homepage}>Navigation</Link>
+				<Link to={routePath.homepage}>Fitness App</Link>
 			</h1>
 		</div>
 	);

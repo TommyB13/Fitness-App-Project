@@ -1,8 +1,8 @@
 import { createAction, handleActions } from 'redux-actions';
 import { createSelector } from 'reselect';
 
-import { pushRoute, replaceRoute } from 'models/routing';
-// import { clearUser } from 'models/user';
+import { pushRoute } from 'models/routing';
+import { getUser, clearUser } from 'models/user';
 
 import { generateUrl, wrapFetchFormData } from 'utils/api';
 import storage from 'utils/storage';
@@ -27,7 +27,7 @@ export const getIdToken = createAction('GET_ID_TOKEN', () => async dispatch => {
 			redirect_uri: process.env.REACT_APP_COGNITO_REDIRECT_URI,
 		}) + '&scope=email+openid+phone';
 
-	await dispatch(pushRoute(HOSTED_UI_URI));
+	await dispatch(pushRoute({ pathname: HOSTED_UI_URI }));
 
 	return null;
 });
@@ -50,9 +50,9 @@ export const getAccessToken = createAction('GET_ACCESS_TOKEN', code => async dis
 		},
 	);
 
-	dispatch(updateAccessToken(token));
+	await dispatch(updateAccessToken(token));
+	await dispatch(getUser());
 	dispatch(setLogin());
-	dispatch(replaceRoute('/'));
 
 	return null;
 });
@@ -61,7 +61,7 @@ export const loadAuthToken = createAction('LOAD_AUTH_TOKEN', data => ({ data }))
 
 export const logout = createAction('LOGOUT', () => async dispatch => {
 	storage.removeItem('token');
-	// dispatch(clearUser());
+	dispatch(clearUser());
 	dispatch(setLogout());
 	dispatch(pushRoute({ pathname: '/' }));
 });
