@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react';
 import { createAction, handleActions } from 'redux-actions';
-import qs from 'qs';
+// import qs from 'qs';
 
 import { useRedux } from 'utils/hook/redux';
 
@@ -30,32 +30,32 @@ const reducer = {
 	),
 };
 
-const getQueries = search => {
-	const queries = {};
+// const getQueries = search => {
+// 	const queries = {};
 
-	if (search) {
-		const queryStr = search.split('?')[1];
-		const queryPairs = queryStr.split('&');
+// 	if (search) {
+// 		const queryStr = search.split('?')[1];
+// 		const queryPairs = queryStr.split('&');
 
-		queryPairs.forEach(query => {
-			const [key, value] = query.split('=');
-			queries[key] = value.includes('%2B') ? value.split('%2B').join('+') : decodeURI(value);
-		});
-	}
+// 		queryPairs.forEach(query => {
+// 			const [key, value] = query.split('=');
+// 			queries[key] = value.includes('%2B') ? value.split('%2B').join('+') : decodeURI(value);
+// 		});
+// 	}
 
-	return queries;
-};
+// 	return queries;
+// };
 
 export const pushRoute = createAction(
 	'PUSH_ROUTE',
 	({ search = '', state, ...props }, cb = () => {}) =>
 		() => {
 			const { search: oldSearch = '', pathname: oldPathname = '' } = history.location;
-			const queryObj = getQueries(oldSearch);
+			// const queryObj = getQueries(oldSearch);
 
 			history.push({
 				...props,
-				search: qs.stringify(queryObj, { addQueryPrefix: true }),
+				search, //qs.stringify(queryObj, { addQueryPrefix: true }),
 				state: {
 					prevPathname: oldPathname,
 					prevSearch: oldSearch,
@@ -81,13 +81,11 @@ export const replaceRoute = createAction(
 	({ search = '', state, ...props }, cb = () => {}) =>
 		() => {
 			const { search: oldSearch = '', pathname: oldPathname = '' } = history.location;
-			const queryObj = getQueries(oldSearch);
-			console.log('prop', search);
-			console.log('queryObj', oldSearch, queryObj);
+			// const queryObj = getQueries(oldSearch);
 
 			history.replace({
 				...props,
-				search: search, //qs.stringify(queryObj, { addQueryPrefix: true, encode: encodeURI }),
+				search, //qs.stringify(queryObj, { addQueryPrefix: true, encode: encodeURI }),
 				state: {
 					prevPathname: oldPathname,
 					prevSearch: oldSearch,
@@ -116,7 +114,7 @@ export const useHistory = () => useContext(HistoryContext);
 
 const mapHooksToState = state => state.routing;
 
-export const useRouting = () => useRedux(mapHooksToState, { pushRoute, replaceRoute });
+export const useRouting = () => useRedux(mapHooksToState, { routeChange, pushRoute, replaceRoute });
 
 // eslint-disable-next-line
 export default { reducer };
