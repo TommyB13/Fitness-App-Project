@@ -1,4 +1,5 @@
 @import 'styles/color.scss';
+@import 'styles/media.scss';
 
 .wrapper {
 	display: flex;
@@ -11,12 +12,25 @@
 	border-top: 1px solid #efeff0;
 	box-shadow: 0 0 8px 0 rgba(51, 51, 51, 0.2);
 
+	@media (min-width: $media-phone) {
+		left: 0;
+		height: 100vh;
+		width: 72px;
+		align-items: center;
+		justify-content: center;
+	}
+
 	& > ul {
 		display: flex;
 		justify-content: space-between;
 		list-style: none;
 		padding: 0;
 		margin: 0;
+
+		@media (min-width: $media-phone) {
+			flex-direction: column;
+			gap: 24px;
+		}
 
 		& > li {
 			flex: 1;
@@ -51,6 +65,10 @@
 			font-style: normal;
 			font-weight: 500;
 			line-height: 16px;
+
+			@media (min-width: $media-phone) {
+				display: none;
+			}
 		}
 	}
 }
