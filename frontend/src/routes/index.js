@@ -5,7 +5,8 @@ import history from 'store/history';
 import routePath from 'constants/path';
 import ProtectedRoute from 'utils/hoc/ProtectedRoute';
 import App from 'layouts/App';
-import { HomePage } from 'layouts/Home';
+import HomePage from 'layouts/Home';
+import NewPost from 'layouts/New'; // Add this import
 import { ProfilePage } from 'layouts/Profile';
 
 import Header from 'components/organisms/Header';
@@ -33,6 +34,7 @@ function AppRoutes() {
 				<Routes>
 					{/* Non-protected - Anyone has access */}
 					<Route path={routePath.homepage} element={<HomePage />} />
+					<Route path={routePath.new} element={<NewPost />} /> {/* Add this route */}
 
 					{/* Protected - Needs to login */}
 					<Route

@@ -1,48 +1,35 @@
-import React, { useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import qs from 'qs';
-
-import { useAuth } from 'models/auth';
-import { useRouting } from 'models/routing';
-
-import routePath from 'constants/path';
-
+import React from 'react';
 import styles from './styles.module.scss';
 
-function HomePage() {
-	const [{ search }, { replaceRoute }] = useRouting();
-	const { code } = qs.parse(search, { ignoreQueryPrefix: true });
-
-	const [{ isLogin }, { getIdToken, getAccessToken, logout }] = useAuth();
-
-	async function asyncGetAccessToken() {
-		if (code) {
-			await getAccessToken(code);
-			await replaceRoute({ search: '' });
-		}
-	}
-
-	useEffect(() => {
-		asyncGetAccessToken();
-	}, [code]);
-
+function HomePage({ posts = [] }) { // Default to an empty array
 	return (
 		<div className={styles.homeLayout}>
-			<h2>Home</h2>
-			<div className={styles.contentWrapper}>
-				{isLogin ? (
-					<button type="button" onClick={logout}>
-						Logout
-					</button>
-				) : (
-					<button type="button" onClick={getIdToken}>
-						Login
-					</button>
-				)}
+			<div className={styles.header}>
+				<h1>Home</h1>
 			</div>
-			{isLogin && <Link to={routePath.profile}>Profile</Link>}
+
+			{posts.length === 0 ? (
+				<p>No posts available.</p>
+			) : (
+				posts.map((post, index) => (
+					<div key={index} className={styles.post}>
+						<div className={styles.postHeader}>
+							<img src="path_to_profile_image.jpg" alt="Profile" className={styles.profileImage} />
+							<div className={styles.userInfo}>
+								<h3 className={styles.username}>Username</h3>
+								<span className={styles.timestamp}>Just now</span>
+							</div>
+						</div>
+						<img src={post.image} alt="Post Image" className={styles.postImage} />
+						<div className={styles.postContent}>
+							<h2 className={styles.postHeading}>{post.heading}</h2>
+							<p className={styles.postDescription}>{post.description}</p>
+						</div>
+					</div>
+				))
+			)}
 		</div>
 	);
 }
 
-export { HomePage };
+export default HomePage;
