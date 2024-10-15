@@ -15,10 +15,7 @@ const getToken = () => {
 export const generateUrl = (url, params) => {
 	const paramsString = qs.stringify(params, { arrayFormat: 'brackets', encode: encodeURI });
 
-	const URL =
-		paramsString !== ''
-			? `${REACT_APP_API_ENDPOINT}/${url}?${paramsString}`
-			: `${REACT_APP_API_ENDPOINT}/${url}`;
+	const URL = paramsString !== '' ? `${REACT_APP_API_ENDPOINT}/${url}?${paramsString}` : `${REACT_APP_API_ENDPOINT}/${url}`;
 
 	return URL;
 };
@@ -33,8 +30,9 @@ export const wrapFetch = async (url, options = { headers: {} }, params = {}) => 
 	});
 
 	const result = await fetch(URL, { ...options, headers });
+	const data = await result.json();
 
-	return result.json();
+	return { status: result.status, data };
 };
 
 export const wrapAuthFetch = async (url, options = { headers: {} }, params = {}) => {

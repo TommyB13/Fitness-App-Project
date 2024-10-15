@@ -1,8 +1,10 @@
-// eslint-disable-next-line
-export default {
+const routePath = {
+	welcome: '/welcome',
 	homepage: '/',
 	challenge: '/challenge',
-	new: '/new',
+	new: '/new', // Ensure this is correctly set
 	market: '/market',
 	profile: '/profile',
 };
+
+export default routePath;
