@@ -35,7 +35,7 @@ function Navigation() {
 		},
 		{
 			title: 'New',
-			link: routePath.new,
+			link: routePath.new, // Ensure this is correctly set
 			icon: NewIcon,
 			isActive: currentPathname.includes('/new'),
 		},
@@ -52,6 +52,10 @@ function Navigation() {
 			isActive: currentPathname.includes('/profile'),
 		},
 	];
+
+	if (pathname === routePath.welcome) {
+		return null;
+	}
 
 	return (
 		<div className={styles.wrapper}>

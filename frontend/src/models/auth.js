@@ -8,6 +8,7 @@ import { generateUrl, wrapFetchFormData } from 'utils/api';
 import storage from 'utils/storage';
 import { isExist } from 'utils/helper';
 import { useRedux } from 'utils/hook/redux';
+import routePath from 'constants/path';
 
 export const setLogin = createAction('SET_LOGIN');
 export const setLogout = createAction('SET_LOGOUT');
@@ -52,7 +53,12 @@ export const getAccessToken = createAction('GET_ACCESS_TOKEN', code => async dis
 
 	await dispatch(updateAccessToken(token));
 	await dispatch(getUser());
-	dispatch(setLogin());
+	await dispatch(setLogin());
+	await dispatch(
+		pushRoute({ pathname: routePath.homepage, search: '' }, () => {
+			window.location.href = '/';
+		}),
+	);
 
 	return null;
 });
@@ -63,7 +69,11 @@ export const logout = createAction('LOGOUT', () => async dispatch => {
 	storage.removeItem('token');
 	dispatch(clearUser());
 	dispatch(setLogout());
-	dispatch(pushRoute({ pathname: '/' }));
+	dispatch(
+		pushRoute({ pathname: routePath.welcome }, () => {
+			window.location.href = '/';
+		}),
+	);
 });
 
 export const defaultTokenData = {
