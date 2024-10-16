@@ -1,5 +1,5 @@
 import React from 'react';
-import { HashRouter, BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import history from 'store/history';
 import routePath from 'constants/path';
