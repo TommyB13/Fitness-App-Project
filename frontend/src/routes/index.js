@@ -1,24 +1,25 @@
 import React from 'react';
-import { HashRouter, BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import history from 'store/history';
-import App from 'layouts/App';
 import routePath from 'constants/path';
-import { AuthProvider } from 'utils/hook/useAuth';
 import ProtectedRoute from 'utils/hoc/ProtectedRoute';
-
+import App from 'layouts/App';
+import { WelcomePage } from 'layouts/Welcome';
 import { HomePage } from 'layouts/Home';
+import { NewPost } from 'layouts/New';
 import { ProfilePage } from 'layouts/Profile';
 
 import Header from 'components/organisms/Header';
+import Navigation from 'components/organisms/Navigation';
 
 function RouterWrapper({ children }) {
 	return process.env.NODE_ENV !== 'production' ? (
 		<BrowserRouter>{children}</BrowserRouter>
 	) : (
-		<HashRouter history={history} basename={process.env.REACT_APP_PUBLIC_URL}>
+		<BrowserRouter history={history} basename={process.env.REACT_APP_PUBLIC_URL}>
 			{children}
-		</HashRouter>
+		</BrowserRouter>
 	);
 }
 
@@ -26,26 +27,40 @@ function AppRoutes() {
 	return (
 		<RouterWrapper>
 			<App>
-				<AuthProvider>
-					{/* Navbar */}
-					<Header />
+				{/* Navbar */}
+				<Header />
+				<Navigation />
 
-					{/* Routes */}
-					<Routes>
-						{/* Non-protected - Anyone has access */}
-						<Route path={routePath.homepage} element={<HomePage />} />
-
-						{/* Protected - Needs to login */}
-						<Route
-							path={routePath.profile}
-							element={
-								<ProtectedRoute>
-									<ProfilePage />
-								</ProtectedRoute>
-							}
-						/>
-					</Routes>
-				</AuthProvider>
+				{/* Routes */}
+				<Routes>
+					{/* Non-protected - Anyone has access */}
+					<Route path={routePath.welcome} element={<WelcomePage />} />
+					{/* Protected - Needs to login */}
+					<Route
+						path={routePath.homepage}
+						element={
+							<ProtectedRoute>
+								<HomePage />
+							</ProtectedRoute>
+						}
+					/>
+					<Route
+						path={routePath.new}
+						element={
+							<ProtectedRoute>
+								<NewPost />
+							</ProtectedRoute>
+						}
+					/>
+					<Route
+						path={routePath.profile}
+						element={
+							<ProtectedRoute>
+								<ProfilePage />
+							</ProtectedRoute>
+						}
+					/>
+				</Routes>
 			</App>
 		</RouterWrapper>
 	);

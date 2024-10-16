@@ -1,29 +1,36 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-
-import routePath from 'constants/path';
-import { useAuth } from 'utils/hook/useAuth';
+import React, { useState } from 'react';
 
 import styles from './styles.module.scss';
 
 function HomePage() {
-	const { user, logout } = useAuth();
-	const link =
-		'https://fitness-app.auth.us-east-2.amazoncognito.com/login?client_id=16kuomlumcb7u5nc7rqporf31j&response_type=code&scope=email+openid+phone&redirect_uri=https%3A%2F%2Flocalhost%3A3000';
+	const [posts, setPosts] = useState([]);
 
 	return (
 		<div className={styles.homeLayout}>
-			Home
-			<div>
-				{user ? (
-					<button type="button" onClick={logout}>
-						Logout
-					</button>
-				) : (
-					<Link to={link}>Login</Link>
-				)}
+			<div className={styles.header}>
+				<h1>Home</h1>
 			</div>
-			<Link to={routePath.profile}>Profile</Link>
+
+			{posts.length === 0 ? (
+				<p>No posts available.</p>
+			) : (
+				posts.map((post, index) => (
+					<div key={index} className={styles.post}>
+						<div className={styles.postHeader}>
+							<img src="path_to_profile_image.jpg" alt="Profile" className={styles.profileImage} />
+							<div className={styles.userInfo}>
+								<h3 className={styles.username}>Username</h3>
+								<span className={styles.timestamp}>Just now</span>
+							</div>
+						</div>
+						<img src={post.image} alt="Post Image" className={styles.postImage} />
+						<div className={styles.postContent}>
+							<h2 className={styles.postHeading}>{post.heading}</h2>
+							<p className={styles.postDescription}>{post.description}</p>
+						</div>
+					</div>
+				))
+			)}
 		</div>
 	);
 }
