@@ -17,9 +17,9 @@ function RouterWrapper({ children }) {
 	return process.env.NODE_ENV !== 'production' ? (
 		<BrowserRouter>{children}</BrowserRouter>
 	) : (
-		<HashRouter history={history} basename={process.env.REACT_APP_PUBLIC_URL}>
+		<BrowserRouter history={history} basename={process.env.REACT_APP_PUBLIC_URL}>
 			{children}
-		</HashRouter>
+		</BrowserRouter>
 	);
 }
 
