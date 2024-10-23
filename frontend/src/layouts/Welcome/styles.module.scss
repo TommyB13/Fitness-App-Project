@@ -4,7 +4,56 @@
 .welcomeLayout {
 	display: flex;
 	flex-direction: column;
-	margin-top: 64px;
-	height: calc(100vh - 64px);
-	padding: 8px 16px;
+	align-items: center;
+	position: relative;
+	height: 100vh;
+	padding: 30vh 16px 8px 16px;
+
+	& .logoWrapper {
+		display: flex;
+		position: relative;
+
+		& .logo {
+			width: 120px;
+			height: 120px;
+			border: 2px solid $primary;
+			padding: 16px;
+			border-radius: 16px;
+		}
+
+		& > h1 {
+			position: absolute;
+			text-wrap: nowrap;
+			font-size: 20px;
+			font-weight: 500;
+			bottom: -80px;
+			left: 50%;
+			transform: translateX(-50%);
+		}
+	}
+
+	& .ctaBtn {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		position: absolute;
+		bottom: 48px;
+		height: 40px;
+		padding: 0 24px;
+		background-color: transparent;
+		border: 2px solid $primary;
+		border-radius: 24px;
+		color: $primary;
+		font-weight: 600;
+		font-size: 16px;
+		cursor: pointer;
+		transition: all 0.3s;
+
+		@media (hover: hover) {
+			&:hover {
+				background-color: $primary;
+				color: white;
+			}
+		}
+	}
 }
