@@ -9,5 +9,9 @@
 
 	@media (min-width: $media-phone) {
 		margin-left: 72px;
+
+		&.welcome {
+			margin-left: 0;
+		}
 	}
 }

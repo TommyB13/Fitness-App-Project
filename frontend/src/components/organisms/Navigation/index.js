@@ -35,7 +35,7 @@ function Navigation() {
 		},
 		{
 			title: 'New',
-			link: routePath.new, // Ensure this is correctly set
+			link: routePath.new,
 			icon: NewIcon,
 			isActive: currentPathname.includes('/new'),
 		},

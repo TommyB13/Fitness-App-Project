@@ -1,13 +1,15 @@
 import React, { useEffect, Suspense } from 'react';
 import { useLocation } from 'react-router-dom';
+import classnames from 'classnames';
 
+import routePath from 'constants/path';
 import { useRouting } from 'models/routing';
 
 import styles from './styles.module.scss';
 
 function App({ children }) {
 	const location = useLocation();
-	const [, { routeChange }] = useRouting();
+	const [{ pathname }, { routeChange }] = useRouting();
 
 	useEffect(() => {
 		routeChange(location);
@@ -15,7 +17,13 @@ function App({ children }) {
 
 	return (
 		<Suspense fallback={<div>Loading...</div>}>
-			<div className={styles.wrapper}>{children}</div>
+			<div
+				className={classnames(styles.wrapper, {
+					[styles.welcome]: pathname === routePath.welcome,
+				})}
+			>
+				{children}
+			</div>
 		</Suspense>
 	);
 }

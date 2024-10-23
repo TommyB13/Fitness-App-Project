@@ -2,7 +2,7 @@ const routePath = {
 	welcome: '/welcome',
 	homepage: '/',
 	challenge: '/challenge',
-	new: '/new', // Ensure this is correctly set
+	new: '/new',
 	market: '/market',
 	profile: '/profile',
 };
