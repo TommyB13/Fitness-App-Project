@@ -10,6 +10,13 @@ export const defaultUserData = {
 	email_verified: false,
 	email: '',
 	username: '',
+
+	userId: '',
+	challenges: [],
+	consecutiveDays: 0,
+	imageUrl: '',
+	name: '',
+	points: 0,
 };
 
 export const getUser = createAction('FETCH_USER', () => async dispatch => {
