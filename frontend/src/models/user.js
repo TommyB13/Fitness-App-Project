@@ -1,7 +1,6 @@
 import { createAction, handleActions } from 'redux-actions';
 import { createSelector } from 'reselect';
 
-import { logout } from 'models/auth';
 import { useRedux } from 'utils/hook/redux';
 import { wrapAuthFetch } from 'utils/api';
 
@@ -19,15 +18,10 @@ export const defaultUserData = {
 	points: 0,
 };
 
-export const getUser = createAction('FETCH_USER', () => async dispatch => {
-	const { /*status,*/ data } = await wrapAuthFetch('oauth2/userInfo', {
+export const getUser = createAction('FETCH_USER', () => async () => {
+	const { data } = await wrapAuthFetch('oauth2/userInfo', {
 		method: 'GET',
 	});
-
-	// if (status !== 200) {
-	// 	console.error(data.error_description);
-	// 	dispatch(logout());
-	// }
 
 	return data;
 });
