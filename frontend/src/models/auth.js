@@ -22,11 +22,15 @@ export const updateAccessToken = createAction('UPDATE_ACCESS_TOKEN', token => {
 export const getIdToken = createAction('GET_ID_TOKEN', () => async dispatch => {
 	// link to hosted ui (scope don't need to encode)
 	const HOSTED_UI_URI =
-		generateUrl('login', {
-			client_id: process.env.REACT_APP_COGNITO_CLIENT_ID,
-			response_type: 'code',
-			redirect_uri: process.env.REACT_APP_COGNITO_REDIRECT_URI,
-		}) + '&scope=email+openid+phone';
+		generateUrl(
+			'login',
+			{
+				client_id: process.env.REACT_APP_COGNITO_CLIENT_ID,
+				response_type: 'code',
+				redirect_uri: process.env.REACT_APP_COGNITO_REDIRECT_URI,
+			},
+			true,
+		) + '&scope=email+openid+phone';
 
 	await dispatch(pushRoute({ pathname: HOSTED_UI_URI }));
 
@@ -49,6 +53,7 @@ export const getAccessToken = createAction('GET_ACCESS_TOKEN', code => async dis
 			code,
 			redirect_uri: process.env.REACT_APP_COGNITO_REDIRECT_URI,
 		},
+		true,
 	);
 
 	await dispatch(updateAccessToken({ ...token, expiryTime: Date.now() + token.expires_in * 1000 }));

@@ -4,7 +4,7 @@ import { defaultTokenData } from 'models/auth';
 
 import storage from './storage';
 
-const { REACT_APP_API_ENDPOINT } = process.env;
+const { REACT_APP_COGNITO_API_ENDPOINT, REACT_APP_LAMBDA_API_ENDPOINT } = process.env;
 
 const getToken = () => {
 	const tokenData = storage.getItem('token');
@@ -37,6 +37,7 @@ const refreshToken = async () => {
 				refresh_token: token.refresh_token,
 				redirect_uri: process.env.REACT_APP_COGNITO_REDIRECT_URI,
 			},
+			true,
 		);
 
 		storage.setItem('token', JSON.stringify({ ...newToken, expiryTime: Date.now() + newToken.expires_in * 1000 }));
@@ -57,16 +58,17 @@ const isTokenValid = token => {
 	return Date.now() < token.expiryTime - bufferTime;
 };
 
-export const generateUrl = (url, params) => {
+export const generateUrl = (url, params, isCognito = false) => {
 	const paramsString = qs.stringify(params, { arrayFormat: 'brackets', encode: encodeURI });
+	const endpoint = isCognito ? REACT_APP_COGNITO_API_ENDPOINT : REACT_APP_LAMBDA_API_ENDPOINT;
 
-	const URL = paramsString !== '' ? `${REACT_APP_API_ENDPOINT}/${url}?${paramsString}` : `${REACT_APP_API_ENDPOINT}/${url}`;
+	const URL = paramsString !== '' ? `${endpoint}/${url}?${paramsString}` : `${endpoint}/${url}`;
 
 	return URL;
 };
 
-export const wrapFetch = async (url, options = { headers: {} }, params = {}) => {
-	const URL = generateUrl(url, params);
+export const wrapFetch = async (url, options = { headers: {} }, params = {}, isCognito = false) => {
+	const URL = generateUrl(url, params, isCognito);
 
 	const headers = new Headers({
 		'Content-Type': 'application/json',
@@ -80,7 +82,7 @@ export const wrapFetch = async (url, options = { headers: {} }, params = {}) => 
 	return { status: result.status, data };
 };
 
-export const wrapAuthFetch = async (url, options = { headers: {} }, params = {}) => {
+export const wrapAuthFetch = async (url, options = { headers: {} }, params = {}, isCognito = false) => {
 	let token = getToken();
 
 	if (!isTokenValid(token)) {
@@ -97,18 +99,19 @@ export const wrapAuthFetch = async (url, options = { headers: {} }, params = {})
 			},
 		},
 		params,
+		isCognito,
 	);
 };
 
-export const wrapFetchFormData = async (url, options, params = {}) => {
-	const URL = generateUrl(url, params);
+export const wrapFetchFormData = async (url, options, params = {}, isCognito = false) => {
+	const URL = generateUrl(url, params, isCognito);
 
 	const result = await fetch(URL, options);
 
 	return result.json();
 };
 
-export const wrapAuthFetchFormData = async (url, options, params = {}) => {
+export const wrapAuthFetchFormData = async (url, options, params = {}, isCognito = false) => {
 	const token = getToken();
 
 	return wrapFetchFormData(
@@ -121,5 +124,6 @@ export const wrapAuthFetchFormData = async (url, options, params = {}) => {
 			},
 		},
 		params,
+		isCognito,
 	);
 };
