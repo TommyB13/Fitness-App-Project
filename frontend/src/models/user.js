@@ -20,14 +20,14 @@ export const defaultUserData = {
 };
 
 export const getUser = createAction('FETCH_USER', () => async dispatch => {
-	const { status, data } = await wrapAuthFetch('oauth2/userInfo', {
+	const { /*status,*/ data } = await wrapAuthFetch('oauth2/userInfo', {
 		method: 'GET',
 	});
 
-	if (status !== 200) {
-		console.error(data.error_description);
-		dispatch(logout());
-	}
+	// if (status !== 200) {
+	// 	console.error(data.error_description);
+	// 	dispatch(logout());
+	// }
 
 	return data;
 });
