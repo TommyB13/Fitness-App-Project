@@ -19,8 +19,21 @@ export const defaultUserData = {
 };
 
 export const getUser = createAction('FETCH_USER', () => async () => {
-	const { data } = await wrapAuthFetch('oauth2/userInfo', {
-		method: 'GET',
+	const { data } = await wrapAuthFetch(
+		'oauth2/userInfo',
+		{
+			method: 'GET',
+		},
+		{},
+		true,
+	);
+
+	return data;
+});
+
+export const createUser = createAction('CREATE_USER', () => async () => {
+	const { data } = await wrapAuthFetch('users', {
+		method: 'POST',
 	});
 
 	return data;
