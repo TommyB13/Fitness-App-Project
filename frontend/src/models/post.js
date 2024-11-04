@@ -4,8 +4,9 @@ import { createAction, handleActions } from 'redux-actions';
 import { wrapAuthFetch } from 'utils/api';
 import { useRedux } from 'utils/hook/redux';
 
-export const fetchPosts = createAction('FETCH_POSTS', () => async () => {
+export const fetchPosts = createAction('FETCH_POSTS', async () => {
 	const { data } = await wrapAuthFetch('posts');
+	console.log('FETCH_POSTS', data);
 
 	return data;
 	// return data.data.map(d => ({
@@ -34,10 +35,19 @@ export const fetchPostDetail = createAction('FETCH_POST_DETAIL', () => async (_,
 	};
 });
 
+export const addPost = createAction('ADD_POST', async newPost => {
+	await wrapAuthFetch('posts', {
+		method: 'POST',
+		body: JSON.stringify(newPost),
+		headers: {
+			'Content-Type': 'application/json',
+		},
+	});
+	const { data } = await wrapAuthFetch('posts'); // Fetch updated posts
+	return data;
+});
+
 const defaultTargetPostData = {
-	postId: '',
-	user: '',
-	userId: '',
 	challenge: '',
 	comments: [],
 	completed: false,
@@ -45,6 +55,9 @@ const defaultTargetPostData = {
 	id: '',
 	imgUrl: '',
 	percentage: 0,
+	postId: '',
+	user: '',
+	userId: '',
 };
 
 const reducer = {
@@ -75,6 +88,7 @@ export const usePosts = () =>
 	useRedux(selectPosts, {
 		fetchPosts,
 		fetchPostDetail,
+		addPost,
 	});
 
 export default { reducer };

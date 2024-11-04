@@ -1,66 +1,49 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Use useNavigate instead of useHistory
+import { useNavigate } from 'react-router-dom';
+import { usePosts } from 'models/post';
 
-import styles from './styles.module.scss';
-
-function NewPost({ addPost }) {
+function NewPost() {
 	const [newPost, setNewPost] = useState({ image: '', title: '', description: '' });
-	const navigate = useNavigate(); // Use useNavigate
+	const [, { addPost }] = usePosts();
+	const navigate = useNavigate();
 
 	const handleInputChange = e => {
 		const { name, value } = e.target;
 		setNewPost({ ...newPost, [name]: value });
 	};
 
-	const handleAddPost = e => {
+	const handleAddPost = async e => {
 		e.preventDefault();
-		const { image, title, description } = newPost;
-
-		if (!image || !title || !description) {
-			alert('Please fill out all fields before adding the post.');
-			return;
-		}
-
-		addPost(newPost);
+		await addPost(newPost);
 		setNewPost({ image: '', title: '', description: '' });
-		navigate('/'); // Use navigate instead of history.push
+		navigate('/home');
 	};
 
 	return (
-		<div className={styles.newPostContainer}>
-			<form className={styles.newPostForm} onSubmit={handleAddPost}>
-				<div className={styles.newPostHeader}>
-					<img src="path_to_profile_image.jpg" alt="Profile" className={styles.profileImage} />
-				</div>
-				<input
-					type="text"
-					name="title"
-					placeholder="Title"
-					value={newPost.title}
-					onChange={handleInputChange}
-					className={styles.input}
-				/>
-				<input
-					type="text"
-					name="image"
-					placeholder="Image URL"
-					value={newPost.image}
-					onChange={handleInputChange}
-					className={styles.input}
-				/>
-				<textarea
-					name="description"
-					placeholder="What's on your mind?"
-					value={newPost.description}
-					onChange={handleInputChange}
-					className={styles.textarea}
-				/>
-				<button type="submit" className={styles.button}>
-					Add Post
-				</button>
-			</form>
-		</div>
+		<form onSubmit={handleAddPost}>
+			<input
+				type="text"
+				name="title"
+				placeholder="Title"
+				value={newPost.title}
+				onChange={handleInputChange}
+			/>
+			<input
+				type="text"
+				name="image"
+				placeholder="Image URL"
+				value={newPost.image}
+				onChange={handleInputChange}
+			/>
+			<textarea
+				name="description"
+				placeholder="Description"
+				value={newPost.description}
+				onChange={handleInputChange}
+			/>
+			<button type="submit">Add Post</button>
+		</form>
 	);
 }
 
-export { NewPost };
+export default NewPost;

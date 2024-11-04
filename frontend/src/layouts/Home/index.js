@@ -1,9 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
+import { usePosts } from 'models/post';
 
 import styles from './styles.module.scss';
 
 function HomePage() {
-	const [posts, setPosts] = useState([]);
+	const [{ posts }, { fetchPosts }] = usePosts();
+
+	useEffect(() => {
+		fetchPosts();
+	}, []);
 
 	return (
 		<div className={styles.homeLayout}>
