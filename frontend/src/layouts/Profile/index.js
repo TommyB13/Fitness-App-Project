@@ -6,11 +6,11 @@ import { useUserData } from 'models/user';
 import styles from './styles.module.scss';
 
 function ProfilePage() {
-	const [{ email, email_verified, sub, username }, { getUser }] = useUserData();
+	const [{ displayName, imageUrl, createdDate, userId, points, challenges, consecutiveDays, firstLogin, name }, { getUser }] = useUserData();
 	const [, { logout }] = useAuth();
 
 	useEffect(() => {
-		if (!email) {
+		if (!userId) {
 			getUser();
 		}
 	}, []);
@@ -19,11 +19,11 @@ function ProfilePage() {
 		<div className={styles.profileLayout}>
 			<h2>Profile page</h2>
 			<ul>
-				<li>Email: {email}</li>
-				<li>Email_Verified: {email_verified}</li>
-				<li>Sub: {sub}</li>
-				<li>Username: {username}</li>
+				<li>Name: {displayName}</li>
+				<li>Points: {points}</li>
+				<li>Consecutive Days: {consecutiveDays}</li>
 			</ul>
+			<img src={imageUrl} alt="avatar" />
 			<button type="button" onClick={logout}>
 				Logout
 			</button>

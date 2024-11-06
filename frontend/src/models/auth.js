@@ -2,7 +2,7 @@ import { createAction, handleActions } from 'redux-actions';
 import { createSelector } from 'reselect';
 
 import { pushRoute } from 'models/routing';
-import { getUser, clearUser } from 'models/user';
+import { createUser, clearUser } from 'models/user';
 
 import { generateUrl, wrapFetchFormData } from 'utils/api';
 import storage from 'utils/storage';
@@ -57,8 +57,8 @@ export const getAccessToken = createAction('GET_ACCESS_TOKEN', code => async dis
 	);
 
 	await dispatch(updateAccessToken({ ...token, expiryTime: Date.now() + token.expires_in * 1000 }));
-	await dispatch(getUser());
 	await dispatch(setLogin());
+	await dispatch(createUser());
 	await dispatch(
 		pushRoute({ pathname: routePath.homepage, search: '' }, () => {
 			window.location.href = '/';
