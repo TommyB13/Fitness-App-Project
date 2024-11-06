@@ -1,48 +1,87 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { TextInput, Textarea, Group, Button, Select } from '@mantine/core';
+
 import { usePosts } from 'models/post';
+import { useChallenges } from 'models/challenge';
+
+import styles from './styles.module.scss';
 
 function NewPost() {
-	const [newPost, setNewPost] = useState({ image: '', title: '', description: '' });
+	const [newPost, setNewPost] = useState({
+		title: '',
+		challenge: '',
+		completed: false,
+		content: '',
+		imgUrl: '',
+		percentage: 0,
+	});
 	const [, { addPost }] = usePosts();
-	const navigate = useNavigate();
+	const [{ challenges }, { fetchChallenges }] = useChallenges();
 
 	const handleInputChange = e => {
 		const { name, value } = e.target;
 		setNewPost({ ...newPost, [name]: value });
 	};
 
-	const handleAddPost = async e => {
+	const handleAddPost = e => {
 		e.preventDefault();
-		await addPost(newPost);
-		setNewPost({ image: '', title: '', description: '' });
-		navigate('/home');
+		console.log(newPost);
+		addPost(newPost);
 	};
 
+	useEffect(() => {
+		fetchChallenges();
+		setNewPost({
+			title: '',
+			challenge: '',
+			completed: false,
+			content: '',
+			imgUrl: '',
+			percentage: 0,
+		});
+	}, []);
+
 	return (
-		<form onSubmit={handleAddPost}>
-			<input
-				type="text"
-				name="title"
-				placeholder="Title"
-				value={newPost.title}
-				onChange={handleInputChange}
-			/>
-			<input
-				type="text"
-				name="image"
-				placeholder="Image URL"
-				value={newPost.image}
-				onChange={handleInputChange}
-			/>
-			<textarea
-				name="description"
-				placeholder="Description"
-				value={newPost.description}
-				onChange={handleInputChange}
-			/>
-			<button type="submit">Add Post</button>
-		</form>
+		<div className={styles.newWrapper}>
+			<form onSubmit={handleAddPost}>
+				<Select
+					label="Challenge"
+					placeholder="Select a challenge"
+					data={challenges.map(c => ({ value: c.challengeId, label: c.title }))}
+					onChange={_value => setNewPost({ ...newPost, challenge: _value })}
+				/>
+				<TextInput
+					label="Title"
+					description=""
+					placeholder="Please enter the title"
+					name="title"
+					value={newPost.title}
+					onChange={handleInputChange}
+					mt="md"
+				/>
+				<TextInput
+					label="Image URL"
+					description=""
+					placeholder="Please enter the image url"
+					name="imgUrl"
+					value={newPost.imgUrl}
+					onChange={handleInputChange}
+					mt="md"
+				/>
+				<Textarea
+					label="Content"
+					description=""
+					placeholder="Please enter the content"
+					name="content"
+					value={newPost.content}
+					onChange={handleInputChange}
+					mt="md"
+				/>
+				<Group justify="flex-end" mt="md">
+					<Button type="submit">Submit</Button>
+				</Group>
+			</form>
+		</div>
 	);
 }
 

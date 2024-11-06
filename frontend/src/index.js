@@ -7,7 +7,7 @@ import Routes from './routes';
 import configureStore from './store';
 import reportWebVitals from './reportWebVitals';
 
-import { loadConfigFromLocalStorage } from 'utils/external';
+import { loadConfigFromLocalStorage, extendDayjsPlugin } from 'utils/external';
 
 import '@mantine/core/styles.css';
 import 'styles/global.scss';
@@ -18,6 +18,7 @@ const theme = createTheme({
 });
 
 loadConfigFromLocalStorage(store);
+extendDayjsPlugin();
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

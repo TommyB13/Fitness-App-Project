@@ -1,12 +1,15 @@
 import { createAction, handleActions } from 'redux-actions';
 // import dayjs from 'dayjs';
 
+import { pushRoute } from 'models/routing';
+
 import { wrapAuthFetch } from 'utils/api';
 import { useRedux } from 'utils/hook/redux';
 
+import routePath from 'constants/path';
+
 export const fetchPosts = createAction('FETCH_POSTS', async () => {
 	const { data } = await wrapAuthFetch('posts');
-	console.log('FETCH_POSTS', data);
 
 	return data;
 	// return data.data.map(d => ({
@@ -35,29 +38,30 @@ export const fetchPostDetail = createAction('FETCH_POST_DETAIL', () => async (_,
 	};
 });
 
-export const addPost = createAction('ADD_POST', async newPost => {
-	await wrapAuthFetch('posts', {
+export const addPost = createAction('ADD_POST', newPost => async dispatch => {
+	const { data } = await wrapAuthFetch('post', {
 		method: 'POST',
 		body: JSON.stringify(newPost),
-		headers: {
-			'Content-Type': 'application/json',
-		},
 	});
-	const { data } = await wrapAuthFetch('posts'); // Fetch updated posts
+
+	await dispatch(
+		pushRoute({ pathname: routePath.homepage, search: '' }, () => {
+			window.location.href = '/';
+		}),
+	);
+
 	return data;
 });
 
 const defaultTargetPostData = {
+	postId: '',
+	userId: '',
 	challenge: '',
-	comments: [],
 	completed: false,
 	content: '',
-	id: '',
 	imgUrl: '',
 	percentage: 0,
-	postId: '',
-	user: '',
-	userId: '',
+	comments: [],
 };
 
 const reducer = {
