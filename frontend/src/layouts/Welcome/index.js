@@ -12,14 +12,10 @@ function WelcomePage() {
 	const { code } = qs.parse(search, { ignoreQueryPrefix: true });
 	const [, { getIdToken, getAccessToken }] = useAuth();
 
-	async function asyncGetAccessToken() {
-		if (code) {
-			await getAccessToken(code);
-		}
-	}
-
 	useEffect(() => {
-		asyncGetAccessToken();
+		if (code) {
+			getAccessToken(code);
+		}
 	}, [code]);
 
 	return (

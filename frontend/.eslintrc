@@ -28,7 +28,7 @@
 		"operator-linebreak": "off",
 		"max-len": [
 			2,
-			110,
+			160,
 			4,
 			{
 				"ignoreUrls": true,
