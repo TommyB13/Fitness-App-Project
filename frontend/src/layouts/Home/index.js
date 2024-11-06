@@ -1,10 +1,44 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDisclosure } from '@mantine/hooks';
+import { Modal, TextInput, Group, Button } from '@mantine/core';
+
 import { usePosts } from 'models/post';
+import { useUserData } from 'models/user';
 
 import styles from './styles.module.scss';
 
 function HomePage() {
+	const [value, setValue] = useState('');
+	const [{ userId, firstLogin }, { updateUser, getUser }] = useUserData();
 	const [{ posts }, { fetchPosts }] = usePosts();
+	const [opened, { close, open }] = useDisclosure(firstLogin);
+
+	const setToNonFirstLogin = () => {
+		updateUser({ firstLogin: false });
+		close();
+	};
+
+	const submitForm = () => {
+		updateUser({
+			firstLogin: false,
+			displayName: value,
+		});
+		close();
+	};
+
+	useEffect(() => {
+		if (!userId) {
+			getUser();
+		}
+	}, [userId]);
+
+	useEffect(() => {
+		if (firstLogin) {
+			open();
+		} else {
+			close();
+		}
+	}, [firstLogin]);
 
 	useEffect(() => {
 		fetchPosts();
@@ -36,6 +70,15 @@ function HomePage() {
 					</div>
 				))
 			)}
+
+			<Modal opened={opened} onClose={setToNonFirstLogin} title="Update Your Name" centered>
+				<TextInput label="Display Name" placeholder="Your name" mt="md" value={value} onChange={e => setValue(e.target.value)} />
+				<Group justify="flex-end" mt="md">
+					<Button onClick={submitForm} disabled={!value}>
+						Submit
+					</Button>
+				</Group>
+			</Modal>
 		</div>
 	);
 }

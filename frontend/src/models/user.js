@@ -5,28 +5,35 @@ import { useRedux } from 'utils/hook/redux';
 import { wrapAuthFetch } from 'utils/api';
 
 export const defaultUserData = {
-	sub: '',
-	email_verified: false,
-	email: '',
-	username: '',
-
+	displayName: '',
+	imageUrl: '',
+	createdDate: '',
 	userId: '',
+	points: 0,
 	challenges: [],
 	consecutiveDays: 0,
-	imageUrl: '',
+	firstLogin: false,
 	name: '',
-	points: 0,
 };
 
 export const getUser = createAction('FETCH_USER', () => async () => {
 	const { data } = await wrapAuthFetch(
-		'oauth2/userInfo',
+		'me', // 'oauth2/userInfo',
 		{
 			method: 'GET',
 		},
 		{},
-		true,
+		// true,
 	);
+
+	return data;
+});
+
+export const updateUser = createAction('UPDATE_USER', form => async () => {
+	const { data } = await wrapAuthFetch('me', {
+		method: 'PUT',
+		body: JSON.stringify(form),
+	});
 
 	return data;
 });
@@ -34,7 +41,10 @@ export const getUser = createAction('FETCH_USER', () => async () => {
 export const createUser = createAction('CREATE_USER', () => async () => {
 	const { data } = await wrapAuthFetch('users', {
 		method: 'POST',
+		body: JSON.stringify({}),
 	});
+
+	console.log(data);
 
 	return data;
 });
@@ -72,7 +82,9 @@ const selectUserData = createSelector(
 
 export const useUserData = () =>
 	useRedux(selectUserData, {
+		createUser,
 		getUser,
+		updateUser,
 	});
 
 export default { reducer };
