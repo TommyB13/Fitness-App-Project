@@ -7,8 +7,9 @@ import ProtectedRoute from 'utils/hoc/ProtectedRoute';
 import App from 'layouts/App';
 import { WelcomePage } from 'layouts/Welcome';
 import { HomePage } from 'layouts/Home';
-import { NewPost } from 'layouts/New';
+import  NewPost from 'layouts/New';
 import { ProfilePage } from 'layouts/Profile';
+import { HomeDetail } from 'layouts/HomeDetail';
 
 import Header from 'components/organisms/Header';
 import Navigation from 'components/organisms/Navigation';
@@ -43,7 +44,18 @@ function AppRoutes() {
 								<HomePage />
 							</ProtectedRoute>
 						}
-					/>
+					>
+						<Route
+							path=":post-id"
+							element={
+								<ProtectedRoute>
+									<HomeDetail />
+								</ProtectedRoute>
+
+							
+							}
+						/>
+					</Route>
 					<Route
 						path={routePath.new}
 						element={

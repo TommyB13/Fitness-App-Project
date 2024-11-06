@@ -1,11 +1,22 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Use useNavigate instead of useHistory
+import React, { useState, useEffect } from 'react';
+import { TextInput, Textarea, Group, Button, Select } from '@mantine/core';
+
+import { usePosts } from 'models/post';
+import { useChallenges } from 'models/challenge';
 
 import styles from './styles.module.scss';
 
-function NewPost({ addPost }) {
-	const [newPost, setNewPost] = useState({ image: '', title: '', description: '' });
-	const navigate = useNavigate(); // Use useNavigate
+function NewPost() {
+	const [newPost, setNewPost] = useState({
+		title: '',
+		challenge: '',
+		completed: false,
+		content: '',
+		imgUrl: '',
+		percentage: 0,
+	});
+	const [, { addPost }] = usePosts();
+	const [{ challenges }, { fetchChallenges }] = useChallenges();
 
 	const handleInputChange = e => {
 		const { name, value } = e.target;
@@ -14,53 +25,64 @@ function NewPost({ addPost }) {
 
 	const handleAddPost = e => {
 		e.preventDefault();
-		const { image, title, description } = newPost;
-
-		if (!image || !title || !description) {
-			alert('Please fill out all fields before adding the post.');
-			return;
-		}
-
+		console.log(newPost);
 		addPost(newPost);
-		setNewPost({ image: '', title: '', description: '' });
-		navigate('/'); // Use navigate instead of history.push
 	};
 
+	useEffect(() => {
+		fetchChallenges();
+		setNewPost({
+			title: '',
+			challenge: '',
+			completed: false,
+			content: '',
+			imgUrl: '',
+			percentage: 0,
+		});
+	}, []);
+
 	return (
-		<div className={styles.newPostContainer}>
-			<form className={styles.newPostForm} onSubmit={handleAddPost}>
-				<div className={styles.newPostHeader}>
-					<img src="path_to_profile_image.jpg" alt="Profile" className={styles.profileImage} />
-				</div>
-				<input
-					type="text"
+		<div className={styles.newWrapper}>
+			<form onSubmit={handleAddPost}>
+				<Select
+					label="Challenge"
+					placeholder="Select a challenge"
+					data={challenges.map(c => ({ value: c.challengeId, label: c.title }))}
+					onChange={_value => setNewPost({ ...newPost, challenge: _value })}
+				/>
+				<TextInput
+					label="Title"
+					description=""
+					placeholder="Please enter the title"
 					name="title"
-					placeholder="Title"
 					value={newPost.title}
 					onChange={handleInputChange}
-					className={styles.input}
+					mt="md"
 				/>
-				<input
-					type="text"
-					name="image"
-					placeholder="Image URL"
-					value={newPost.image}
+				<TextInput
+					label="Image URL"
+					description=""
+					placeholder="Please enter the image url"
+					name="imgUrl"
+					value={newPost.imgUrl}
 					onChange={handleInputChange}
-					className={styles.input}
+					mt="md"
 				/>
-				<textarea
-					name="description"
-					placeholder="What's on your mind?"
-					value={newPost.description}
+				<Textarea
+					label="Content"
+					description=""
+					placeholder="Please enter the content"
+					name="content"
+					value={newPost.content}
 					onChange={handleInputChange}
-					className={styles.textarea}
+					mt="md"
 				/>
-				<button type="submit" className={styles.button}>
-					Add Post
-				</button>
+				<Group justify="flex-end" mt="md">
+					<Button type="submit">Submit</Button>
+				</Group>
 			</form>
 		</div>
 	);
 }
 
-export { NewPost };
+export default NewPost;

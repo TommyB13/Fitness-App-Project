@@ -8,12 +8,6 @@ export const fetchChallenges = createAction('FETCH_CHALLENGES', () => async () =
 	const { data } = await wrapAuthFetch('challenges');
 
 	return data;
-	// return data.data.map(d => ({
-	// 	...d,
-	// 	published_at: isExist(d.published_at)
-	// 		? dayjs(d.published_at).format('YYYY 年 MM 月 DD 日')
-	// 		: '',
-	// }));
 });
 
 export const fetchChallengeDetail = createAction('FETCH_CHALLENGE_DETAIL', () => async (_, getState) => {
