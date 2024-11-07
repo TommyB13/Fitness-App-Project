@@ -25,7 +25,6 @@ function NewPost() {
 
 	const handleAddPost = e => {
 		e.preventDefault();
-		console.log(newPost);
 		addPost(newPost);
 	};
 

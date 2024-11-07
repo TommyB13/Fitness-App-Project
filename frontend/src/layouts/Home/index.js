@@ -55,9 +55,9 @@ function HomePage() {
 				posts.map((post, index) => (
 					<div key={index} className={styles.post}>
 						<div className={styles.postHeader}>
-							<img src={post.imgUrl} alt="Profile" className={styles.profileImage} />
+							<img src={post.profileImgUrl} alt="Profile" className={styles.profileImage} />
 							<div className={styles.userInfo}>
-								<h3 className={styles.username}>Username</h3>
+								<h3 className={styles.username}>{post.displayName}</h3>
 								<span className={styles.timestamp}>{dayjs(post.createdDate).format('YYYY-MM-DD')}</span>
 							</div>
 						</div>
