@@ -7,7 +7,7 @@ import ProtectedRoute from 'utils/hoc/ProtectedRoute';
 import App from 'layouts/App';
 import { WelcomePage } from 'layouts/Welcome';
 import { HomePage } from 'layouts/Home';
-import  NewPost from 'layouts/New';
+import NewPost from 'layouts/New';
 import { ProfilePage } from 'layouts/Profile';
 import { HomeDetail } from 'layouts/HomeDetail';
 
@@ -35,9 +35,10 @@ function AppRoutes() {
 				{/* Routes */}
 				<Routes>
 					{/* Non-protected - Anyone has access */}
-					<Route path={routePath.welcome} element={<WelcomePage />} />
+					<Route exact path={routePath.welcome} element={<WelcomePage />} />
 					{/* Protected - Needs to login */}
 					<Route
+						exact
 						path={routePath.homepage}
 						element={
 							<ProtectedRoute>
@@ -46,17 +47,17 @@ function AppRoutes() {
 						}
 					>
 						<Route
+							exact
 							path=":post-id"
 							element={
 								<ProtectedRoute>
 									<HomeDetail />
 								</ProtectedRoute>
-
-							
 							}
 						/>
 					</Route>
 					<Route
+						exact
 						path={routePath.new}
 						element={
 							<ProtectedRoute>
@@ -65,6 +66,7 @@ function AppRoutes() {
 						}
 					/>
 					<Route
+						exact
 						path={routePath.profile}
 						element={
 							<ProtectedRoute>

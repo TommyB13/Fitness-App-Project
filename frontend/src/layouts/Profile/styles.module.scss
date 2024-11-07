@@ -7,4 +7,20 @@
 	margin-top: 64px;
 	height: calc(100vh - 64px);
 	padding: 8px 16px;
+
+	& > img {
+		width: 64px;
+		height: 64px;
+		border-radius: 32px;
+	}
+
+	& > ul {
+		margin: 0;
+		padding: 12px 0;
+
+		& > li {
+			list-style: none;
+			padding: 4px 0;
+		}
+	}
 }

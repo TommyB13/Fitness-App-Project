@@ -29,11 +29,13 @@ export const getUser = createAction('FETCH_USER', () => async () => {
 	return data;
 });
 
-export const updateUser = createAction('UPDATE_USER', form => async () => {
+export const updateUser = createAction('UPDATE_USER', form => async dispatch => {
 	const { data } = await wrapAuthFetch('me', {
 		method: 'PUT',
 		body: JSON.stringify(form),
 	});
+
+	await dispatch(getUser());
 
 	return data;
 });
@@ -43,8 +45,6 @@ export const createUser = createAction('CREATE_USER', () => async () => {
 		method: 'POST',
 		body: JSON.stringify({}),
 	});
-
-	console.log(data);
 
 	return data;
 });
