@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Text, Group, Button, Modal, TextInput } from '@mantine/core';
+import { Link } from 'react-router-dom';
+import dayjs from 'dayjs';
+import { Text, Group, Button, Modal, TextInput, Divider } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 
 import { useAuth } from 'models/auth';
 import { useUserData } from 'models/user';
+import { usePosts } from 'models/post';
+
+import routePath from 'constants/path';
 
 import styles from './styles.module.scss';
 
@@ -13,6 +18,7 @@ function ProfilePage() {
 		{ getUser, updateUser },
 	] = useUserData();
 	const [, { logout }] = useAuth();
+	const [{ myPosts }, { fetchMyPosts }] = usePosts();
 	const [form, setForm] = useState({ displayName: '', imageUrl: '' });
 	const [opened, { close, open }] = useDisclosure(false);
 
@@ -22,10 +28,14 @@ function ProfilePage() {
 	};
 
 	useEffect(() => {
+		fetchMyPosts();
+	}, []);
+
+	useEffect(() => {
 		if (!userId) {
 			getUser();
 		}
-	}, []);
+	}, [userId]);
 
 	return (
 		<div className={styles.profileLayout}>
@@ -46,6 +56,34 @@ function ProfilePage() {
 					Logout
 				</Button>
 			</Group>
+
+			<Divider mt="lg" mb="lg" />
+
+			<Text size="xl" mb="lg">
+				My Posts
+			</Text>
+			{myPosts.length === 0 ? (
+				<Text ta="center" size="lg" mt="lg">
+					No posts available.
+				</Text>
+			) : (
+				myPosts.map((post, index) => (
+					<Link to={`${routePath.myPost}/${post.postId}`} key={index} className={styles.post}>
+						<div className={styles.postHeader}>
+							<img src={post.profileImgUrl} alt="Profile" className={styles.profileImage} />
+							<div className={styles.userInfo}>
+								<h3 className={styles.username}>{post.displayName}</h3>
+								<span className={styles.timestamp}>{dayjs(post.createdDate).format('YYYY-MM-DD')}</span>
+							</div>
+						</div>
+						<img src={post.imgUrl} alt="Post Image" className={styles.postImage} />
+						<div className={styles.postContent}>
+							<h2 className={styles.postHeading}>{post.title}</h2>
+							<p className={styles.postDescription}>{post.content}</p>
+						</div>
+					</Link>
+				))
+			)}
 
 			<Modal opened={opened} onClose={close} title="Update Your Profile" centered>
 				<TextInput

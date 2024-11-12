@@ -12,12 +12,6 @@ export const fetchPosts = createAction('FETCH_POSTS', async () => {
 	const { data } = await wrapAuthFetch('posts');
 
 	return data;
-	// return data.data.map(d => ({
-	// 	...d,
-	// 	published_at: isExist(d.published_at)
-	// 		? dayjs(d.published_at).format('YYYY 年 MM 月 DD 日')
-	// 		: '',
-	// }));
 });
 
 export const fetchPostDetail = createAction('FETCH_POST_DETAIL', () => async (_, getState) => {
@@ -25,17 +19,30 @@ export const fetchPostDetail = createAction('FETCH_POST_DETAIL', () => async (_,
 		routing: { pathname },
 	} = getState();
 	const postId = pathname.split('/')[2];
-
-	const { data } = await wrapAuthFetch(`posts/${postId}`, {
+	const { data } = await wrapAuthFetch(`post/${postId}`, {
 		method: 'GET',
 	});
 
-	return {
-		...data.data,
-		// published_at: isExist(data.data.published_at)
-		// 	? dayjs(data.data.published_at).format('YYYY 年 MM 月 DD 日')
-		// 	: '',
-	};
+	return data;
+});
+
+export const fetchMyPosts = createAction('FETCH_MY_POSTS', async () => {
+	const { data } = await wrapAuthFetch('posts/my');
+
+	return data;
+});
+
+export const fetchMyPostDetail = createAction('FETCH_MY_POST_DETAIL', () => async (_, getState) => {
+	const {
+		routing: { pathname },
+	} = getState();
+	const postId = pathname.split('/')[3];
+
+	const { data } = await wrapAuthFetch(`post/my/${postId}`, {
+		method: 'GET',
+	});
+
+	return data;
 });
 
 export const addPost = createAction('ADD_POST', newPost => async dispatch => {
@@ -49,6 +56,22 @@ export const addPost = createAction('ADD_POST', newPost => async dispatch => {
 			window.location.href = '/';
 		}),
 	);
+
+	return data;
+});
+
+export const updatePost = createAction('UPDATE_POST', form => async (dispatch, getState) => {
+	const {
+		routing: { pathname },
+	} = getState();
+	const postId = pathname.split('/')[3];
+
+	const { data } = await wrapAuthFetch(`post/my/${postId}`, {
+		method: 'PUT',
+		body: JSON.stringify(form),
+	});
+
+	await dispatch(fetchMyPostDetail());
 
 	return data;
 });
@@ -78,9 +101,22 @@ const reducer = {
 
 				targetPost: action.payload,
 			}),
+
+			FETCH_MY_POSTS_FULFILLED: (state, action) => ({
+				...state,
+
+				myPosts: action.payload,
+			}),
+
+			FETCH_MY_POST_DETAIL_FULFILLED: (state, action) => ({
+				...state,
+
+				targetPost: action.payload,
+			}),
 		},
 		{
 			posts: [],
+			myPosts: [],
 			targetPost: defaultTargetPostData,
 		},
 	),
@@ -92,7 +128,10 @@ export const usePosts = () =>
 	useRedux(selectPosts, {
 		fetchPosts,
 		fetchPostDetail,
+		fetchMyPosts,
+		fetchMyPostDetail,
 		addPost,
+		updatePost,
 	});
 
 export default { reducer };
