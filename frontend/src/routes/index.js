@@ -9,7 +9,7 @@ import { WelcomePage } from 'layouts/Welcome';
 import { HomePage } from 'layouts/Home';
 import NewPost from 'layouts/New';
 import { ProfilePage } from 'layouts/Profile';
-import { HomeDetail } from 'layouts/HomeDetail';
+import { PostDetail } from 'layouts/PostDetail';
 
 import Header from 'components/organisms/Header';
 import Navigation from 'components/organisms/Navigation';
@@ -35,29 +35,25 @@ function AppRoutes() {
 				{/* Routes */}
 				<Routes>
 					{/* Non-protected - Anyone has access */}
-					<Route exact path={routePath.welcome} element={<WelcomePage />} />
+					<Route path={routePath.welcome} element={<WelcomePage />} />
 					{/* Protected - Needs to login */}
 					<Route
-						exact
 						path={routePath.homepage}
 						element={
 							<ProtectedRoute>
 								<HomePage />
 							</ProtectedRoute>
 						}
-					>
-						<Route
-							exact
-							path=":post-id"
-							element={
-								<ProtectedRoute>
-									<HomeDetail />
-								</ProtectedRoute>
-							}
-						/>
-					</Route>
+					/>
 					<Route
-						exact
+						path={`${routePath.post}/:post-id`}
+						element={
+							<ProtectedRoute>
+								<PostDetail />
+							</ProtectedRoute>
+						}
+					/>
+					<Route
 						path={routePath.new}
 						element={
 							<ProtectedRoute>
@@ -66,11 +62,18 @@ function AppRoutes() {
 						}
 					/>
 					<Route
-						exact
 						path={routePath.profile}
 						element={
 							<ProtectedRoute>
 								<ProfilePage />
+							</ProtectedRoute>
+						}
+					/>
+					<Route
+						path={`${routePath.myPost}/:post-id`}
+						element={
+							<ProtectedRoute>
+								<PostDetail />
 							</ProtectedRoute>
 						}
 					/>

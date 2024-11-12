@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
 import { useDisclosure } from '@mantine/hooks';
 import { Modal, TextInput, Group, Button, Text } from '@mantine/core';
 
 import { usePosts } from 'models/post';
 import { useUserData } from 'models/user';
+
+import routePath from 'constants/path';
 
 import styles from './styles.module.scss';
 
@@ -28,6 +31,10 @@ function HomePage() {
 	};
 
 	useEffect(() => {
+		fetchPosts();
+	}, []);
+
+	useEffect(() => {
 		if (!userId) {
 			getUser();
 		}
@@ -41,10 +48,6 @@ function HomePage() {
 		}
 	}, [firstLogin]);
 
-	useEffect(() => {
-		fetchPosts();
-	}, []);
-
 	return (
 		<div className={styles.homeLayout}>
 			{posts.length === 0 ? (
@@ -53,7 +56,7 @@ function HomePage() {
 				</Text>
 			) : (
 				posts.map((post, index) => (
-					<div key={index} className={styles.post}>
+					<Link to={`${routePath.post}/${post.postId}`} key={index} className={styles.post}>
 						<div className={styles.postHeader}>
 							<img src={post.profileImgUrl} alt="Profile" className={styles.profileImage} />
 							<div className={styles.userInfo}>
@@ -66,7 +69,7 @@ function HomePage() {
 							<h2 className={styles.postHeading}>{post.title}</h2>
 							<p className={styles.postDescription}>{post.content}</p>
 						</div>
-					</div>
+					</Link>
 				))
 			)}
 
