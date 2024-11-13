@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
-import { Group, Button, Modal, Select, Textarea, TextInput } from '@mantine/core';
+import { Link } from 'react-router-dom';
+import { Group, Button, Modal, Select, Textarea, TextInput, rem } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
+import { IconArrowLeft } from '@tabler/icons-react';
 
 import { usePosts } from 'models/post';
 import { useRouting } from 'models/routing';
@@ -68,7 +70,10 @@ function PostDetail() {
 	}, [pathname]);
 
 	return (
-		<div>
+		<div className={styles.homeLayout}>
+			<Link to={-1}>
+				<IconArrowLeft style={{ width: rem(40), height: rem(40) }} stroke={1.5} color="black" />
+			</Link>
 			<div className={styles.post}>
 				<div className={styles.postHeader}>
 					<img src={profileImgUrl} alt="Profile" className={styles.profileImage} />

@@ -6,6 +6,7 @@ specifiers:
   '@babel/preset-react': ^7.24.7
   '@mantine/core': ^7.13.4
   '@mantine/hooks': ^7.13.4
+  '@tabler/icons-react': ^3.22.0
   '@testing-library/jest-dom': ^5.11.4
   '@testing-library/react': ^11.1.0
   '@testing-library/user-event': ^12.1.10
@@ -41,6 +42,7 @@ dependencies:
   '@babel/plugin-proposal-private-property-in-object': 7.21.11
   '@mantine/core': 7.13.4_06c93f62548ed8699e35c1335d98e0d7
   '@mantine/hooks': 7.13.4_react@18.3.1
+  '@tabler/icons-react': 3.22.0_react@18.3.1
   '@testing-library/jest-dom': 5.17.0
   '@testing-library/react': 11.2.7_react-dom@18.3.1+react@18.3.1
   '@testing-library/user-event': 12.8.3
@@ -2638,6 +2640,19 @@ packages:
       loader-utils: 2.0.4
     transitivePeerDependencies:
       - supports-color
+    dev: false
+
+  /@tabler/icons-react/3.22.0_react@18.3.1:
+    resolution: {integrity: sha512-pOnn+IqZpnkYsEKRvbXXLXwXhYwg4cy1fEVr5SRrgAYJXkobpDjFTdVHlab0HEBXY5AE1NjsMlVeK6H/8Vv2uQ==}
+    peerDependencies:
+      react: '>= 16'
+    dependencies:
+      '@tabler/icons': 3.22.0
+      react: 18.3.1
+    dev: false
+
+  /@tabler/icons/3.22.0:
+    resolution: {integrity: sha512-IfgGzhFph5OBr2wTieWL/hyAs0FThnq9O155a6kfGYxqx7h5LQw91wnRswhEaGhXCcfmR7ZVDUr9H+x4b9Pb8g==}
     dev: false
 
   /@testing-library/dom/7.31.2:
