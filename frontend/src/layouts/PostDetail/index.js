@@ -15,12 +15,13 @@ import styles from './styles.module.scss';
 
 function PostDetail() {
 	const [{ pathname }] = useRouting();
-	const [{ targetPost }, { fetchPostDetail, fetchMyPostDetail, updatePost }] = usePosts();
+	const [{ targetPost }, { fetchPostDetail, fetchMyPostDetail, updatePost, deletePost }] = usePosts();
 	const { profileImgUrl, displayName, createdDate, title, content, imgUrl, challenge, completed, percentage } =
 		targetPost;
 	const [{ challenges }, { fetchChallenges }] = useChallenges();
 	const [editable, setEditable] = useState(false);
 	const [opened, { close, open }] = useDisclosure(false);
+	const [openedDialog, { close: closeDialog, open: openDialog }] = useDisclosure(false);
 	const [editPost, setEditPost] = useState({
 		title: '',
 		challenge: '',
@@ -39,6 +40,11 @@ function PostDetail() {
 		e.preventDefault();
 		close();
 		updatePost(editPost);
+	};
+
+	const handleDeletePost = () => {
+		closeDialog();
+		deletePost(targetPost);
 	};
 
 	useEffect(() => {
@@ -82,9 +88,14 @@ function PostDetail() {
 						<span className={styles.timestamp}>{dayjs(createdDate).format('YYYY-MM-DD')}</span>
 					</div>
 					{editable && (
-						<Button variant="filled" onClick={open} style={{ marginLeft: 'auto' }}>
-							Edit
-						</Button>
+						<>
+							<Button variant="filled" onClick={open} style={{ padding: '4px 12px', marginLeft: 'auto' }}>
+								Edit
+							</Button>
+							<Button variant="filled" onClick={openDialog} style={{ padding: '4px 12px', marginLeft: 8 }} color="red">
+								Delete
+							</Button>
+						</>
 					)}
 				</div>
 				<img src={imgUrl} alt="Post Image" className={styles.postImage} />
@@ -134,6 +145,17 @@ function PostDetail() {
 						<Button type="submit">Submit</Button>
 					</Group>
 				</form>
+			</Modal>
+
+			<Modal opened={openedDialog} onClose={closeDialog} title="Are you sure?" centered>
+				<Group justify="flex-end" mt="md">
+					<Button variant="outline" type="button" onClick={closeDialog} color="red">
+						Cancel
+					</Button>
+					<Button variant="filled" type="button" onClick={handleDeletePost} color="red">
+						Delete
+					</Button>
+				</Group>
 			</Modal>
 		</div>
 	);
