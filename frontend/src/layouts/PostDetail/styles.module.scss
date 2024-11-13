@@ -1,3 +1,6 @@
+@import 'styles/color.scss';
+@import 'styles/media.scss';
+
 $primary: #007bff;
 $primaryHover: #0056b3;
 $border: #ddd;
@@ -10,8 +13,14 @@ $shadow: rgba(0, 0, 0, 0.1);
 	display: flex;
 	flex-direction: column;
 	margin-top: 64px;
-	height: calc(100vh - 64px);
 	padding: 8px 16px;
+	height: calc(100vh - 64px - 100px);
+	overflow-y: scroll;
+
+	@media (min-width: $media-phone) {
+		margin-top: 0;
+		height: 100vh;
+	}
 }
 
 .header {
@@ -84,13 +93,13 @@ $shadow: rgba(0, 0, 0, 0.1);
 
 .post {
 	margin-top: 20px;
-	padding: 20px;
-	border: 1px solid $border;
+	// padding: 20px;
+	// border: 1px solid $border;
 	border-radius: 8px;
-	background-color: $background;
+	// background-color: $background;
 	max-width: 600px;
 	margin: 20px auto;
-	box-shadow: 0 4px 8px $shadow;
+	// box-shadow: 0 4px 8px $shadow;
 }
 
 .postHeader {

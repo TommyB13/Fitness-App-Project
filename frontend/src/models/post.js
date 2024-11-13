@@ -76,6 +76,25 @@ export const updatePost = createAction('UPDATE_POST', form => async (dispatch, g
 	return data;
 });
 
+export const deletePost = createAction('DELETE_POST', () => async (dispatch, getState) => {
+	const {
+		routing: { pathname },
+	} = getState();
+	const postId = pathname.split('/')[3];
+
+	const { data } = await wrapAuthFetch(`post/my/${postId}`, {
+		method: 'DELETE',
+	});
+
+	await dispatch(
+		pushRoute({ pathname: routePath.homepage, search: '' }, () => {
+			window.location.href = routePath.profile;
+		}),
+	);
+
+	return data;
+});
+
 const defaultTargetPostData = {
 	postId: '',
 	userId: '',
@@ -132,6 +151,7 @@ export const usePosts = () =>
 		fetchMyPostDetail,
 		addPost,
 		updatePost,
+		deletePost,
 	});
 
 export default { reducer };

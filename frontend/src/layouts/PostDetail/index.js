@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
-import { Group, Button, Modal, Select, Textarea, TextInput } from '@mantine/core';
+import { Link } from 'react-router-dom';
+import { Group, Button, Modal, Select, Textarea, TextInput, rem } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
+import { IconArrowLeft } from '@tabler/icons-react';
 
 import { usePosts } from 'models/post';
 import { useRouting } from 'models/routing';
@@ -13,12 +15,13 @@ import styles from './styles.module.scss';
 
 function PostDetail() {
 	const [{ pathname }] = useRouting();
-	const [{ targetPost }, { fetchPostDetail, fetchMyPostDetail, updatePost }] = usePosts();
+	const [{ targetPost }, { fetchPostDetail, fetchMyPostDetail, updatePost, deletePost }] = usePosts();
 	const { profileImgUrl, displayName, createdDate, title, content, imgUrl, challenge, completed, percentage } =
 		targetPost;
 	const [{ challenges }, { fetchChallenges }] = useChallenges();
 	const [editable, setEditable] = useState(false);
 	const [opened, { close, open }] = useDisclosure(false);
+	const [openedDialog, { close: closeDialog, open: openDialog }] = useDisclosure(false);
 	const [editPost, setEditPost] = useState({
 		title: '',
 		challenge: '',
@@ -37,6 +40,11 @@ function PostDetail() {
 		e.preventDefault();
 		close();
 		updatePost(editPost);
+	};
+
+	const handleDeletePost = () => {
+		closeDialog();
+		deletePost(targetPost);
 	};
 
 	useEffect(() => {
@@ -68,7 +76,10 @@ function PostDetail() {
 	}, [pathname]);
 
 	return (
-		<div>
+		<div className={styles.homeLayout}>
+			<Link to={-1}>
+				<IconArrowLeft style={{ width: rem(40), height: rem(40) }} stroke={1.5} color="black" />
+			</Link>
 			<div className={styles.post}>
 				<div className={styles.postHeader}>
 					<img src={profileImgUrl} alt="Profile" className={styles.profileImage} />
@@ -77,9 +88,14 @@ function PostDetail() {
 						<span className={styles.timestamp}>{dayjs(createdDate).format('YYYY-MM-DD')}</span>
 					</div>
 					{editable && (
-						<Button variant="filled" onClick={open} style={{ marginLeft: 'auto' }}>
-							Edit
-						</Button>
+						<>
+							<Button variant="filled" onClick={open} style={{ padding: '4px 12px', marginLeft: 'auto' }}>
+								Edit
+							</Button>
+							<Button variant="filled" onClick={openDialog} style={{ padding: '4px 12px', marginLeft: 8 }} color="red">
+								Delete
+							</Button>
+						</>
 					)}
 				</div>
 				<img src={imgUrl} alt="Post Image" className={styles.postImage} />
@@ -129,6 +145,17 @@ function PostDetail() {
 						<Button type="submit">Submit</Button>
 					</Group>
 				</form>
+			</Modal>
+
+			<Modal opened={openedDialog} onClose={closeDialog} title="Are you sure?" centered>
+				<Group justify="flex-end" mt="md">
+					<Button variant="outline" type="button" onClick={closeDialog} color="red">
+						Cancel
+					</Button>
+					<Button variant="filled" type="button" onClick={handleDeletePost} color="red">
+						Delete
+					</Button>
+				</Group>
 			</Modal>
 		</div>
 	);
