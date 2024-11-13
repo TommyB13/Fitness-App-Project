@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 import { Link } from 'react-router-dom';
-import { Group, Button, Modal, Select, Textarea, TextInput, rem } from '@mantine/core';
+import { Group, Button, Modal, Select, Textarea, TextInput, Text, rem } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { IconArrowLeft } from '@tabler/icons-react';
 
@@ -16,8 +16,18 @@ import styles from './styles.module.scss';
 function PostDetail() {
 	const [{ pathname }] = useRouting();
 	const [{ targetPost }, { fetchPostDetail, fetchMyPostDetail, updatePost, deletePost }] = usePosts();
-	const { profileImgUrl, displayName, createdDate, title, content, imgUrl, challenge, completed, percentage } =
-		targetPost;
+	const {
+		profileImgUrl,
+		displayName,
+		createdDate,
+		title,
+		content,
+		imgUrl,
+		challenge,
+		completed,
+		percentage,
+		comments,
+	} = targetPost;
 	const [{ challenges }, { fetchChallenges }] = useChallenges();
 	const [editable, setEditable] = useState(false);
 	const [opened, { close, open }] = useDisclosure(false);
@@ -103,6 +113,29 @@ function PostDetail() {
 					<h2 className={styles.postHeading}>{title}</h2>
 					<p className={styles.postDescription}>{content}</p>
 				</div>
+			</div>
+
+			<Text size="xl" mb="lg">
+				Comments
+			</Text>
+
+			<div className={styles.commentWrapper}>
+				{comments.length === 0 ? (
+					<Text ta="center" size="lg" mt="lg">
+						No comments
+					</Text>
+				) : (
+					comments.reverse().map(comment => (
+						<div key={comment.commentId} className={styles.comment}>
+							<img src={comment.profileImgUrl} alt="Profile" className={styles.profileImage} />
+							<div className={styles.userInfo} style={{ flex: 1 }}>
+								<h3 className={styles.username}>{comment.displayName}</h3>
+								<span>{comment.content}</span>
+							</div>
+							<span className={styles.timestamp}>{dayjs(comment.createdDate).format('hh:mm')}</span>
+						</div>
+					))
+				)}
 			</div>
 
 			<Modal opened={opened} onClose={close} title="Update Your Post" centered>

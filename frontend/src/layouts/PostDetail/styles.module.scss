@@ -165,3 +165,16 @@ $shadow: rgba(0, 0, 0, 0.1);
 	border-top: 1px solid $border;
 	box-shadow: 0 -2px 4px $shadow;
 }
+
+.commentWrapper {
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+	margin-bottom: 40px;
+
+	& .comment {
+		display: flex;
+		// align-items: center;
+		width: 100%;
+	}
+}
