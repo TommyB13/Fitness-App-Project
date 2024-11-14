@@ -76,7 +76,7 @@ function ProfilePage() {
 								<span className={styles.timestamp}>{dayjs(post.createdDate).format('YYYY-MM-DD')}</span>
 							</div>
 						</div>
-						<img src={post.imgUrl} alt="Post Image" className={styles.postImage} />
+						<img src={post.imgUrl} alt="Post" className={styles.postImage} />
 						<div className={styles.postContent}>
 							<h2 className={styles.postHeading}>{post.title}</h2>
 							<p className={styles.postDescription}>{post.content}</p>

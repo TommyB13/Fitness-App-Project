@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 import { Link } from 'react-router-dom';
-import { Group, Button, Modal, Select, Textarea, TextInput, rem } from '@mantine/core';
+import { Group, Button, Modal, Select, Textarea, TextInput, Text, rem } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { IconArrowLeft } from '@tabler/icons-react';
 
@@ -15,9 +15,19 @@ import styles from './styles.module.scss';
 
 function PostDetail() {
 	const [{ pathname }] = useRouting();
-	const [{ targetPost }, { fetchPostDetail, fetchMyPostDetail, updatePost, deletePost }] = usePosts();
-	const { profileImgUrl, displayName, createdDate, title, content, imgUrl, challenge, completed, percentage } =
-		targetPost;
+	const [{ targetPost }, { fetchPostDetail, fetchMyPostDetail, updatePost, deletePost, addComment }] = usePosts();
+	const {
+		profileImgUrl,
+		displayName,
+		createdDate,
+		title,
+		content,
+		imgUrl,
+		challenge,
+		completed,
+		percentage,
+		comments,
+	} = targetPost;
 	const [{ challenges }, { fetchChallenges }] = useChallenges();
 	const [editable, setEditable] = useState(false);
 	const [opened, { close, open }] = useDisclosure(false);
@@ -30,6 +40,7 @@ function PostDetail() {
 		imgUrl: '',
 		percentage: 0,
 	});
+	const [comment, setComment] = useState('');
 
 	const handleInputChange = e => {
 		const { name, value } = e.target;
@@ -45,6 +56,11 @@ function PostDetail() {
 	const handleDeletePost = () => {
 		closeDialog();
 		deletePost(targetPost);
+	};
+
+	const handleAddComment = () => {
+		addComment(comment);
+		setComment('');
 	};
 
 	useEffect(() => {
@@ -98,11 +114,52 @@ function PostDetail() {
 						</>
 					)}
 				</div>
-				<img src={imgUrl} alt="Post Image" className={styles.postImage} />
+				<img src={imgUrl} alt="Post" className={styles.postImage} />
 				<div className={styles.postContent}>
 					<h2 className={styles.postHeading}>{title}</h2>
 					<p className={styles.postDescription}>{content}</p>
 				</div>
+			</div>
+
+			<Text size="xl" mb="lg">
+				Comments
+			</Text>
+
+			<div className={styles.commentWrapper}>
+				{comments.length === 0 ? (
+					<Text ta="center" size="lg" mt="lg">
+						No comments
+					</Text>
+				) : (
+					comments
+						.sort((a, b) => dayjs(a.createdDate).valueOf() - dayjs(b.createdDate).valueOf())
+						.map(comment => (
+							<div key={comment.commentId} className={styles.comment}>
+								<img src={comment.profileImgUrl} alt="Profile" className={styles.profileImage} />
+								<div className={styles.userInfo} style={{ flex: 1 }}>
+									<h3 className={styles.username}>{comment.displayName}</h3>
+									<span>{comment.content}</span>
+								</div>
+								<span className={styles.timestamp}>{dayjs(comment.createdDate).fromNow()}</span>
+							</div>
+						))
+				)}
+
+				{!editable && (
+					<div className={styles.commentInputWrapper}>
+						<TextInput
+							className={styles.commentInput}
+							placeholder="Say something..."
+							name="comment"
+							value={comment}
+							onChange={e => setComment(e.target.value)}
+							onKeyDown={e => e.key === 'Enter' && handleAddComment()}
+						/>
+						<Button variant="filled" onClick={handleAddComment} style={{ padding: '4px 12px' }}>
+							Send
+						</Button>
+					</div>
+				)}
 			</div>
 
 			<Modal opened={opened} onClose={close} title="Update Your Post" centered>
