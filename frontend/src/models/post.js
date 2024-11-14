@@ -95,6 +95,22 @@ export const deletePost = createAction('DELETE_POST', () => async (dispatch, get
 	return data;
 });
 
+export const addComment = createAction('ADD_COMMENT', content => async (dispatch, getState) => {
+	const {
+		routing: { pathname },
+	} = getState();
+	const postId = pathname.split('/')[2];
+
+	const { data } = await wrapAuthFetch(`post/${postId}`, {
+		method: 'PUT',
+		body: JSON.stringify({ content }),
+	});
+
+	await dispatch(fetchPostDetail());
+
+	return data;
+});
+
 const defaultTargetPostData = {
 	postId: '',
 	userId: '',
@@ -152,6 +168,7 @@ export const usePosts = () =>
 		addPost,
 		updatePost,
 		deletePost,
+		addComment,
 	});
 
 export default { reducer };

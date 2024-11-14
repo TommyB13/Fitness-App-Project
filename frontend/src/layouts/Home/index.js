@@ -55,22 +55,24 @@ function HomePage() {
 					No posts available.
 				</Text>
 			) : (
-				posts.map((post, index) => (
-					<Link to={`${routePath.post}/${post.postId}`} key={index} className={styles.post}>
-						<div className={styles.postHeader}>
-							<img src={post.profileImgUrl} alt="Profile" className={styles.profileImage} />
-							<div className={styles.userInfo}>
-								<h3 className={styles.username}>{post.displayName}</h3>
-								<span className={styles.timestamp}>{dayjs(post.createdDate).format('YYYY-MM-DD')}</span>
+				posts
+					.sort((a, b) => dayjs(b.createdDate).valueOf() - dayjs(a.createdDate).valueOf())
+					.map((post, index) => (
+						<Link to={`${routePath.post}/${post.postId}`} key={index} className={styles.post}>
+							<div className={styles.postHeader}>
+								<img src={post.profileImgUrl} alt="Profile" className={styles.profileImage} />
+								<div className={styles.userInfo}>
+									<h3 className={styles.username}>{post.displayName}</h3>
+									<span className={styles.timestamp}>{dayjs(post.createdDate).format('YYYY-MM-DD hh:mm')}</span>
+								</div>
 							</div>
-						</div>
-						<img src={post.imgUrl} alt="Post Image" className={styles.postImage} />
-						<div className={styles.postContent}>
-							<h2 className={styles.postHeading}>{post.title}</h2>
-							<p className={styles.postDescription}>{post.content}</p>
-						</div>
-					</Link>
-				))
+							<img src={post.imgUrl} alt="Post" className={styles.postImage} />
+							<div className={styles.postContent}>
+								<h2 className={styles.postHeading}>{post.title}</h2>
+								<p className={styles.postDescription}>{post.content}</p>
+							</div>
+						</Link>
+					))
 			)}
 
 			<Modal opened={opened} onClose={setToNonFirstLogin} title="Update Your Name" centered>

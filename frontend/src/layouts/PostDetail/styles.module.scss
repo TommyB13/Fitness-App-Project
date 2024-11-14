@@ -16,10 +16,26 @@ $shadow: rgba(0, 0, 0, 0.1);
 	padding: 8px 16px;
 	height: calc(100vh - 64px - 100px);
 	overflow-y: scroll;
+	position: relative;
 
 	@media (min-width: $media-phone) {
 		margin-top: 0;
 		height: 100vh;
+	}
+
+	& > a {
+		position: fixed;
+		top: 14px;
+
+		@media (min-width: $media-phone) {
+			top: 24px;
+		}
+	}
+
+	& > p {
+		max-width: 450px;
+		width: 100%;
+		margin: auto;
 	}
 }
 
@@ -170,11 +186,24 @@ $shadow: rgba(0, 0, 0, 0.1);
 	display: flex;
 	flex-direction: column;
 	gap: 24px;
-	margin-bottom: 40px;
+	padding-bottom: 80px;
+	max-width: 450px;
+	width: 100%;
+	margin: auto;
 
 	& .comment {
 		display: flex;
 		// align-items: center;
 		width: 100%;
+	}
+
+	& .commentInputWrapper {
+		display: flex;
+		gap: 8px;
+		align-items: center;
+
+		& .commentInput {
+			flex: 1;
+		}
 	}
 }

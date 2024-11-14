@@ -15,7 +15,7 @@ import styles from './styles.module.scss';
 
 function PostDetail() {
 	const [{ pathname }] = useRouting();
-	const [{ targetPost }, { fetchPostDetail, fetchMyPostDetail, updatePost, deletePost }] = usePosts();
+	const [{ targetPost }, { fetchPostDetail, fetchMyPostDetail, updatePost, deletePost, addComment }] = usePosts();
 	const {
 		profileImgUrl,
 		displayName,
@@ -40,6 +40,7 @@ function PostDetail() {
 		imgUrl: '',
 		percentage: 0,
 	});
+	const [comment, setComment] = useState('');
 
 	const handleInputChange = e => {
 		const { name, value } = e.target;
@@ -55,6 +56,11 @@ function PostDetail() {
 	const handleDeletePost = () => {
 		closeDialog();
 		deletePost(targetPost);
+	};
+
+	const handleAddComment = () => {
+		addComment(comment);
+		setComment('');
 	};
 
 	useEffect(() => {
@@ -108,7 +114,7 @@ function PostDetail() {
 						</>
 					)}
 				</div>
-				<img src={imgUrl} alt="Post Image" className={styles.postImage} />
+				<img src={imgUrl} alt="Post" className={styles.postImage} />
 				<div className={styles.postContent}>
 					<h2 className={styles.postHeading}>{title}</h2>
 					<p className={styles.postDescription}>{content}</p>
@@ -125,16 +131,34 @@ function PostDetail() {
 						No comments
 					</Text>
 				) : (
-					comments.reverse().map(comment => (
-						<div key={comment.commentId} className={styles.comment}>
-							<img src={comment.profileImgUrl} alt="Profile" className={styles.profileImage} />
-							<div className={styles.userInfo} style={{ flex: 1 }}>
-								<h3 className={styles.username}>{comment.displayName}</h3>
-								<span>{comment.content}</span>
+					comments
+						.sort((a, b) => dayjs(a.createdDate).valueOf() - dayjs(b.createdDate).valueOf())
+						.map(comment => (
+							<div key={comment.commentId} className={styles.comment}>
+								<img src={comment.profileImgUrl} alt="Profile" className={styles.profileImage} />
+								<div className={styles.userInfo} style={{ flex: 1 }}>
+									<h3 className={styles.username}>{comment.displayName}</h3>
+									<span>{comment.content}</span>
+								</div>
+								<span className={styles.timestamp}>{dayjs(comment.createdDate).fromNow()}</span>
 							</div>
-							<span className={styles.timestamp}>{dayjs(comment.createdDate).format('hh:mm')}</span>
-						</div>
-					))
+						))
+				)}
+
+				{!editable && (
+					<div className={styles.commentInputWrapper}>
+						<TextInput
+							className={styles.commentInput}
+							placeholder="Say something..."
+							name="comment"
+							value={comment}
+							onChange={e => setComment(e.target.value)}
+							onKeyDown={e => e.key === 'Enter' && handleAddComment()}
+						/>
+						<Button variant="filled" onClick={handleAddComment} style={{ padding: '4px 12px' }}>
+							Send
+						</Button>
+					</div>
 				)}
 			</div>
 
