@@ -32,6 +32,8 @@ export const handler = async (event, context) => {
   const username = event.requestContext.authorizer?.jwt.claims.username || '';
   let userResult;
   let updateRequestJSON;
+  let params;
+  let updateExpressions;
 
   try {
     switch (event.routeKey) {
@@ -42,15 +44,30 @@ export const handler = async (event, context) => {
         break;
 
       case "GET /post/{id}": // Get single post
-        body = await dynamo.send(
-          new GetCommand({
-            TableName: postsTable,
-            Key: {
-              postId: event.pathParameters.id,
-            },
+        // get all the comments
+        let postComments = await dynamo.send(
+          new ScanCommand({
+            TableName: commentsTable,
+            FilterExpression: "postId = :postId",
+            ExpressionAttributeValues: {
+              ":postId": event.pathParameters.id,
+            }
           })
         );
-        body = body.Item;
+
+        body = await dynamo.send(
+          new ScanCommand({
+            TableName: postsTable,
+            FilterExpression: "postId = :postId",
+            ExpressionAttributeValues: {
+              ":postId": event.pathParameters.id,
+            }
+          })
+        );
+        body = {
+          ...body.Items[0],
+          comments: postComments.Items
+        };
         break;
 
       case "GET /posts/my": // Get my posts (assuming authenticated user)
@@ -58,19 +75,30 @@ export const handler = async (event, context) => {
         body = await dynamo.send(
           new ScanCommand({
             TableName: postsTable,
-            FilterExpression: "#user = :user",
+            FilterExpression: "#userId = :userId",
             ExpressionAttributeNames: {
-              "#user": "user",
+              "#userId": "userId",
             },
             ExpressionAttributeValues: {
-              ":user": userId,
+              ":userId": userId,
             },
           })
         );
         body = body.Items;
         break;
 
-      case "GET /posts/my/{id}": // Get my single post
+      case "GET /post/my/{id}": // Get my single post
+        // get all the comments
+        let myPostComments = await dynamo.send(
+          new ScanCommand({
+            TableName: commentsTable,
+            FilterExpression: "postId = :postId",
+            ExpressionAttributeValues: {
+              ":postId": event.pathParameters.id,
+            }
+          })
+        );
+
         body = await dynamo.send(
           new GetCommand({
             TableName: postsTable,
@@ -80,26 +108,43 @@ export const handler = async (event, context) => {
             },
           })
         );
-        body = body.Item;
+        body = {
+          ...body.Item,
+          comments: myPostComments.Items
+        };
         break;
 
-      case "PUT /posts/my/{id}": // Update my single post
+      case "PUT /post/my/{id}": // Update my single post
         updateRequestJSON = JSON.parse(event.body);
-        await dynamo.send(
-          new PutCommand({
-            TableName: postsTable,
-            Item: {
-              postId: event.pathParameters.id,
-              userId,
-              ...updateRequestJSON, // Merge with request body
-            },
-          })
-        );
+        params = {
+          TableName: postsTable,
+          Key: { postId: event.pathParameters.id, userId },
+          UpdateExpression: "",
+          ExpressionAttributeNames: {},
+          ExpressionAttributeValues: {},
+          ReturnValues: "ALL_NEW"
+        };
+
+        updateExpressions = [];
+
+        Object.entries(updateRequestJSON).forEach(([attribute, value], index) => {
+          const attributeAlias = `#attr${index}`;
+          const valueAlias = `:val${index}`;
+
+          updateExpressions.push(`${attributeAlias} = ${valueAlias}`);
+          params.ExpressionAttributeNames[attributeAlias] = attribute;
+          params.ExpressionAttributeValues[valueAlias] = value;
+        });
+
+        params.UpdateExpression = "SET " + updateExpressions.join(", ");
+
+        await dynamo.send(new UpdateCommand(params));
         body = `Updated post ${event.pathParameters.id}`;
         break;
 
       case "PUT /post/{id}": // Add comment to post
         updateRequestJSON = JSON.parse(event.body);
+        let commentId = uuidv4();
 
         // Step 1: Fetch user details from usersTable using userId
         userResult = await dynamo.send(
@@ -121,20 +166,20 @@ export const handler = async (event, context) => {
           new PutCommand({
             TableName: commentsTable,
             Item: {
-              challengeId: updateRequestJSON.challengeId,
+              commentId,
               postId: event.pathParameters.id,
               userId,
               content: updateRequestJSON.content,
               createdDate: new Date().toISOString(),
               displayName: userResult.Item.displayName,
-              profileImgUrl: displayName.imageUrl
+              profileImgUrl: userResult.Item.imageUrl
             },
           })
         );
         body = `Comment added to post ${event.pathParameters.id}`;
         break;
 
-      case "DELETE /posts/my/{id}": // Delete my single post
+      case "DELETE /post/my/{id}": // Delete my single post
         await dynamo.send(
           new DeleteCommand({
             TableName: postsTable,
@@ -181,7 +226,8 @@ export const handler = async (event, context) => {
               imgUrl: newPostRequestJSON.imgUrl,
               percentage: newPostRequestJSON.percentage,
               displayName: userResult.Item.displayName,
-              profileImgUrl: userResult.Item.imageUrl
+              profileImgUrl: userResult.Item.imageUrl,
+              createdDate: new Date().toISOString()
             }
           })
         );
@@ -227,7 +273,7 @@ export const handler = async (event, context) => {
 
       case "PUT /me": // Update my profile
         let updateProfileRequestJSON = JSON.parse(event.body);
-        const params = {
+        params = {
           TableName: usersTable,
           Key: { userId },
           UpdateExpression: "",
@@ -236,7 +282,7 @@ export const handler = async (event, context) => {
           ReturnValues: "ALL_NEW"
         };
 
-        let updateExpressions = [];
+        updateExpressions = [];
         if (!updateProfileRequestJSON.imageUrl) {
           updateProfileRequestJSON = {
             ...updateProfileRequestJSON,
