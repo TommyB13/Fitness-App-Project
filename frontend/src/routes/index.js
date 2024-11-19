@@ -9,7 +9,7 @@ import { WelcomePage } from 'layouts/Welcome';
 import { HomePage } from 'layouts/Home';
 import NewPost from 'layouts/New';
 import { ProfilePage } from 'layouts/Profile';
-import { HomeDetail } from 'layouts/HomeDetail';
+import { PostDetail } from 'layouts/PostDetail';
 import ChallengesPage from 'layouts/ChallengesPage';
 
 import Header from 'components/organisms/Header';

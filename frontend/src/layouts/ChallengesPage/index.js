@@ -7,15 +7,11 @@ const ChallengesPage = () => {
 
 	useEffect(() => {
 		fetchChallenges();
-	}, [fetchChallenges]);
+	}, []);
 	const renderChallenge = challenge => (
 		<div key={challenge.challengeId} className={styles.challengeCard}>
-			<div className={styles.imagePlaceholder}>
-				<img src={challenge.imgUrl || 'placeholder.png'} alt={challenge.title} />
-			</div>
 			<div className={styles.info}>
 				<span className={styles.tag}>{challenge.type}</span>
-				<span className={styles.progress}>{challenge.percentage}%</span>
 				<h3>{challenge.title}</h3>
 				<p>{challenge.description}</p>
 			</div>
@@ -25,16 +21,8 @@ const ChallengesPage = () => {
 	return (
 		<div className={styles.challengesLayout}>
 			<section>
-				<h2>
-					Ongoing Challenges <button className={styles.linkButton}>more</button>
-				</h2>
-				<div className={styles.challengeList}>{challenges.filter(c => c.ongoing).map(renderChallenge)}</div>
-			</section>
-			<section>
-				<h2>
-					Featured Challenges <button className={styles.linkButton}>more</button>
-				</h2>
-				<div className={styles.challengeList}>{challenges.filter(c => c.featured).map(renderChallenge)}</div>
+				<h2>Featured Challenges</h2>
+				<div className={styles.challengeList}>{challenges.filter(c => c.isFeatured).map(renderChallenge)}</div>
 			</section>
 		</div>
 	);
