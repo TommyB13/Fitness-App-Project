@@ -10,6 +10,7 @@ import { HomePage } from 'layouts/Home';
 import NewPost from 'layouts/New';
 import { ProfilePage } from 'layouts/Profile';
 import { PostDetail } from 'layouts/PostDetail';
+import ChallengesPage from 'layouts/ChallengesPage';
 
 import Header from 'components/organisms/Header';
 import Navigation from 'components/organisms/Navigation';
@@ -70,10 +71,11 @@ function AppRoutes() {
 						}
 					/>
 					<Route
-						path={`${routePath.myPost}/:post-id`}
+						exact
+						path={routePath.challenge}
 						element={
 							<ProtectedRoute>
-								<PostDetail />
+								<ChallengesPage />
 							</ProtectedRoute>
 						}
 					/>
