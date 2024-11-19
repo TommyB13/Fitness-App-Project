@@ -10,21 +10,26 @@ import { usePosts } from 'models/post';
 
 import routePath from 'constants/path';
 
+import ImageUploader from 'components/atoms/ImageUploader';
+
 import styles from './styles.module.scss';
 
 function ProfilePage() {
-	const [
-		{ displayName, imageUrl, createdDate, userId, points, challenges, consecutiveDays, firstLogin, name },
-		{ getUser, updateUser },
-	] = useUserData();
+	const [{ displayName, imageUrl, userId, points, consecutiveDays }, { getUser, updateUser }] = useUserData();
 	const [, { logout }] = useAuth();
 	const [{ myPosts }, { fetchMyPosts }] = usePosts();
-	const [form, setForm] = useState({ displayName: '', imageUrl: '' });
+	const [form, setForm] = useState({ displayName: '' });
 	const [opened, { close, open }] = useDisclosure(false);
+	const [openedUploader, { close: closeUploader, open: openUploader }] = useDisclosure(false);
 
 	const updateForm = () => {
 		updateUser(form);
 		close();
+	};
+
+	const updateAvatar = url => {
+		updateUser({ imageUrl: url });
+		closeUploader();
 	};
 
 	useEffect(() => {
@@ -42,7 +47,7 @@ function ProfilePage() {
 			<Text size="xl" mb="lg">
 				Profile
 			</Text>
-			<img src={imageUrl} alt="avatar" />
+			<img src={imageUrl} alt="avatar" onClick={openUploader} />
 			<ul>
 				<li>Name: {displayName}</li>
 				<li>Points: {points}</li>
@@ -93,18 +98,15 @@ function ProfilePage() {
 					value={form.displayName}
 					onChange={e => setForm({ ...form, displayName: e.target.value })}
 				/>
-				<TextInput
-					label="Image URL"
-					placeholder="Blank for default"
-					mt="md"
-					value={form.imageUrl}
-					onChange={e => setForm({ ...form, imageUrl: e.target.value })}
-				/>
 				<Group justify="flex-end" mt="md">
 					<Button onClick={updateForm} disabled={!form.displayName}>
 						Submit
 					</Button>
 				</Group>
+			</Modal>
+
+			<Modal opened={openedUploader} onClose={closeUploader} title="Update Your Avatar" centered>
+				<ImageUploader type="avatar" callback={updateAvatar} />
 			</Modal>
 		</div>
 	);
