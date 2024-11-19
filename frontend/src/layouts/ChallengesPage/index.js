@@ -1,14 +1,13 @@
 import React, { useEffect } from 'react';
-import { useChallenges } from 'models/challenge';
+import { useChallenges } from 'utils/hook/useChallenges';
 import styles from './styles.module.scss';
 
-function ChallengesPage() {
-	const [{ challenges }, { fetchChallenges }] = useChallenges();
+const ChallengesPage = () => {
+	const [{ challenges = [] }, { fetchChallenges }] = useChallenges();
 
 	useEffect(() => {
 		fetchChallenges();
-	}, []);
-
+	}, [fetchChallenges]);
 	const renderChallenge = challenge => (
 		<div key={challenge.challengeId} className={styles.challengeCard}>
 			<div className={styles.imagePlaceholder}>
@@ -27,18 +26,18 @@ function ChallengesPage() {
 		<div className={styles.challengesLayout}>
 			<section>
 				<h2>
-					Ongoing Challenges <a href="#">more</a>
+					Ongoing Challenges <button className={styles.linkButton}>more</button>
 				</h2>
 				<div className={styles.challengeList}>{challenges.filter(c => c.ongoing).map(renderChallenge)}</div>
 			</section>
 			<section>
 				<h2>
-					Featured Challenges <a href="#">more</a>
+					Featured Challenges <button className={styles.linkButton}>more</button>
 				</h2>
 				<div className={styles.challengeList}>{challenges.filter(c => c.featured).map(renderChallenge)}</div>
 			</section>
 		</div>
 	);
-}
+};
 
 export default ChallengesPage;

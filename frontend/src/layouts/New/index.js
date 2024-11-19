@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { TextInput, Textarea, Group, Button, Select } from '@mantine/core';
 
 import { usePosts } from 'models/post';
-import { useChallenges } from 'models/challenge';
+import useChallenges from 'models/challenge';
 
 import styles from './styles.module.scss';
 
