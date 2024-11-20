@@ -121,7 +121,7 @@ function PostDetail() {
 				</div>
 			</div>
 
-			<Text size="xl" mb="lg">
+			<Text size="xl" mb="lg" mt="md">
 				Comments
 			</Text>
 

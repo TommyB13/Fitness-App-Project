@@ -9,6 +9,10 @@
 	padding: 8px 16px;
 	overflow-y: scroll;
 
+	@media (min-width: $media-phone) {
+		height: 100vh;
+	}
+
 	& > img {
 		width: 64px;
 		height: 64px;

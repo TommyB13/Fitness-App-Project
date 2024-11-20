@@ -71,6 +71,14 @@ function AppRoutes() {
 						}
 					/>
 					<Route
+						path={`${routePath.myPost}/:post-id`}
+						element={
+							<ProtectedRoute>
+								<PostDetail />
+							</ProtectedRoute>
+						}
+					/>
+					<Route
 						exact
 						path={routePath.challenge}
 						element={
