@@ -4,6 +4,8 @@ import { TextInput, Textarea, Group, Button, Select } from '@mantine/core';
 import { usePosts } from 'models/post';
 import { useChallenges } from 'models/challenge';
 
+import ImageUploader from 'components/atoms/ImageUploader';
+
 import styles from './styles.module.scss';
 
 function NewPost() {
@@ -26,6 +28,10 @@ function NewPost() {
 	const handleAddPost = e => {
 		e.preventDefault();
 		addPost(newPost);
+	};
+
+	const uploadImage = url => {
+		setNewPost({ ...newPost, imgUrl: url });
 	};
 
 	useEffect(() => {
@@ -57,8 +63,9 @@ function NewPost() {
 					value={newPost.title}
 					onChange={handleInputChange}
 					mt="md"
+					mb="md"
 				/>
-				<TextInput
+				{/* <TextInput
 					label="Image URL"
 					description=""
 					placeholder="Please enter the image url"
@@ -66,7 +73,8 @@ function NewPost() {
 					value={newPost.imgUrl}
 					onChange={handleInputChange}
 					mt="md"
-				/>
+				/> */}
+				<ImageUploader type="post" uploadOnChange callback={uploadImage} />
 				<Textarea
 					label="Content"
 					description=""
