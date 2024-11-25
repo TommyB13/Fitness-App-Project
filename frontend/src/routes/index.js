@@ -11,6 +11,7 @@ import NewPost from 'layouts/New';
 import { ProfilePage } from 'layouts/Profile';
 import { PostDetail } from 'layouts/PostDetail';
 import ChallengesPage from 'layouts/ChallengesPage';
+import ChallengeDetail from 'layouts/ChallengeDetails';
 // import { MarketPage } from 'layouts/Market';
 
 import Header from 'components/organisms/Header';
@@ -84,6 +85,14 @@ function AppRoutes() {
 						element={
 							<ProtectedRoute>
 								<ChallengesPage />
+							</ProtectedRoute>
+						}
+					/>
+					<Route
+						path={`${routePath.challenge}/:challenge-id`}
+						element={
+							<ProtectedRoute>
+								<ChallengeDetail />
 							</ProtectedRoute>
 						}
 					/>
