@@ -11,7 +11,7 @@ import NewPost from 'layouts/New';
 import { ProfilePage } from 'layouts/Profile';
 import { PostDetail } from 'layouts/PostDetail';
 import ChallengesPage from 'layouts/ChallengesPage';
-import { MarketPage } from 'layouts/Market';
+// import { MarketPage } from 'layouts/Market';
 
 import Header from 'components/organisms/Header';
 import Navigation from 'components/organisms/Navigation';
@@ -87,14 +87,14 @@ function AppRoutes() {
 							</ProtectedRoute>
 						}
 					/>
-					<Route
+					{/* <Route
 						path={routePath.market}
 						element={
 							<ProtectedRoute>
 								<MarketPage />
 							</ProtectedRoute>
 						}
-					/>
+					/> */}
 				</Routes>
 			</App>
 		</RouterWrapper>
