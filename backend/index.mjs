@@ -258,6 +258,33 @@ export const handler = async (event, context) => {
         body = `Created challenge ${newChallengeRequestJSON.challengeId}`;
         break;
 
+      case "GET /challenges/{id}": // Get all posts for a challenge
+        // get all the posts
+        let challengePosts = await dynamo.send(
+          new ScanCommand({
+            TableName: postsTable,
+            FilterExpression: "challenge = :challengeId",
+            ExpressionAttributeValues: {
+              ":challengeId": event.pathParameters.id,
+            }
+          })
+        );
+
+        body = await dynamo.send(
+          new ScanCommand({
+            TableName: challengesTable,
+            FilterExpression: "challengeId = :challengeId",
+            ExpressionAttributeValues: {
+              ":challengeId": event.pathParameters.id,
+            }
+          })
+        );
+        body = {
+          ...body.Items[0],
+          posts: challengePosts.Items
+        };
+        break;
+
       // User routes
       case "GET /me": // Get my profile
         body = await dynamo.send(
@@ -283,12 +310,6 @@ export const handler = async (event, context) => {
         };
 
         updateExpressions = [];
-        if (!updateProfileRequestJSON.imageUrl) {
-          updateProfileRequestJSON = {
-            ...updateProfileRequestJSON,
-            imageUrl: `https://ui-avatars.com/api/?name=${updateProfileRequestJSON.displayName.split(' ').join('+')}`
-          };
-        };
 
         Object.entries(updateProfileRequestJSON).forEach(([attribute, value], index) => {
           const attributeAlias = `#attr${index}`;
