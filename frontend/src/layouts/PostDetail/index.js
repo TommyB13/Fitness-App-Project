@@ -81,7 +81,7 @@ function PostDetail() {
 	}, [editable, targetPost]);
 
 	useEffect(() => {
-		if (pathname.includes(routePath.post)) {
+		if (pathname.includes(routePath.post + '/')) {
 			if (pathname.includes('/profile')) {
 				fetchMyPostDetail();
 				setEditable(true);

@@ -1,6 +1,10 @@
 import React, { useEffect } from 'react';
+
 import { useChallenges } from 'models/challenge';
 import { useRouting } from 'models/routing';
+
+import routePath from 'constants/path';
+
 import styles from './styles.module.scss';
 
 const ChallengeDetail = () => {
@@ -8,7 +12,9 @@ const ChallengeDetail = () => {
 	const [{ targetChallenge }, { fetchChallengeDetail }] = useChallenges();
 
 	useEffect(() => {
-		fetchChallengeDetail();
+		if (pathname.includes(routePath.challenge + '/')) {
+			fetchChallengeDetail();
+		}
 	}, [pathname]);
 
 	if (!targetChallenge.title) {
