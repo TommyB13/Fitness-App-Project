@@ -7,6 +7,8 @@ import { Modal, TextInput, Group, Button, Text } from '@mantine/core';
 import { usePosts } from 'models/post';
 import { useUserData } from 'models/user';
 
+import PullToChange from 'components/atoms/PullToChange';
+
 import routePath from 'constants/path';
 
 import styles from './styles.module.scss';
@@ -50,6 +52,7 @@ function HomePage() {
 
 	return (
 		<div className={styles.homeLayout}>
+			<PullToChange callback={fetchPosts} />
 			{posts.length === 0 ? (
 				<Text ta="center" size="lg" mt="lg">
 					No posts available.

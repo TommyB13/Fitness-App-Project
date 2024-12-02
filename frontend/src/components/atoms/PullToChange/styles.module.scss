@@ -1,0 +1,17 @@
+.wrapper {
+	display: flex;
+	align-content: center;
+	justify-content: center;
+	width: 100%;
+	margin: auto;
+	margin-top: -45px;
+
+	& > svg {
+		width: 40px;
+		height: 40px;
+
+		& > path {
+			color: #525252;
+		}
+	}
+}
