@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import classnames from 'classnames';
 
 import styles from './styles.module.scss';
 
@@ -6,6 +7,7 @@ const PullToChange = ({ callback = () => {} }) => {
 	const refreshCont = useRef(0);
 	const [startPoint, setStartPoint] = useState(0);
 	const [pullChange, setPullChange] = useState();
+	const [showAnimation, setShowAnimation] = useState(false);
 
 	const initLoading = () => {
 		callback();
@@ -26,7 +28,14 @@ const PullToChange = ({ callback = () => {} }) => {
 
 	const endPull = () => {
 		setStartPoint(0);
-		setPullChange(0);
+		setPullChange(45);
+		setShowAnimation(true);
+		setTimeout(() => {
+			setPullChange(0);
+		}, 2000);
+		setTimeout(() => {
+			setShowAnimation(false);
+		}, 2300);
 		if (pullChange > 220) initLoading();
 	};
 
@@ -43,14 +52,18 @@ const PullToChange = ({ callback = () => {} }) => {
 	});
 
 	return (
-		<div ref={refreshCont} className={styles.wrapper} style={{ marginTop: pullChange / 3.118 || '' }}>
+		<div
+			ref={refreshCont}
+			className={classnames(styles.wrapper, { [styles.goBack]: showAnimation })}
+			style={{ marginTop: pullChange / 3.118 || '' }}
+		>
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				fill="none"
 				viewBox="0 0 24 24"
 				strokeWidth={1.5}
 				stroke="currentColor"
-				className=""
+				className={classnames({ [styles.showAnimation]: showAnimation })}
 				style={{ transform: `rotate(${pullChange}deg)` }}
 			>
 				<path
