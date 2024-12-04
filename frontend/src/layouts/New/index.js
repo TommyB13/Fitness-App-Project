@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { TextInput, Textarea, Group, Button, Select } from '@mantine/core';
+import { Title, TextInput, Textarea, Group, Button, Select } from '@mantine/core';
 
 import { usePosts } from 'models/post';
 import { useChallenges } from 'models/challenge';
@@ -48,6 +48,9 @@ function NewPost() {
 
 	return (
 		<div className={styles.newWrapper}>
+			<Title order={2} mb="lg" mt="sm">
+				New Post
+			</Title>
 			<form onSubmit={handleAddPost}>
 				<Select
 					label="Challenge"

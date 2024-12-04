@@ -1,6 +1,9 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Title } from '@mantine/core';
+
 import { useChallenges } from 'utils/hook/useChallenges';
+
 import styles from './styles.module.scss';
 
 const ChallengesPage = () => {
@@ -38,15 +41,21 @@ const ChallengesPage = () => {
 	return (
 		<div className={styles.challengesLayout}>
 			<section>
-				<h2>Featured Challenges</h2>
+				<Title order={2} mb="lg" mt="sm">
+					Featured Challenges
+				</Title>
 				<div className={styles.challengeList}>{featuredChallenges.map(renderChallenge)}</div>
 			</section>
 			<section>
-				<h2>Workout Challenges</h2>
+				<Title order={2} mb="lg" mt="sm">
+					Workout Challenges
+				</Title>
 				<div className={styles.challengeList}>{workoutChallenges.map(renderChallenge)}</div>
 			</section>
 			<section>
-				<h2>Diet Challenges</h2>
+				<Title order={2} mb="lg" mt="sm">
+					Diet Challenges
+				</Title>
 				<div className={styles.challengeList}>{dietChallenges.map(renderChallenge)}</div>
 			</section>
 		</div>
