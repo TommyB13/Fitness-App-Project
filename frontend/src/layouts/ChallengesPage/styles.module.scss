@@ -28,14 +28,6 @@ $shadow: rgba(0, 0, 0, 0.1);
 
 section {
 	margin-bottom: 32px;
-
-	& h2 {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		font-size: 24px;
-		margin-bottom: 16px;
-	}
 }
 
 .challengeList {

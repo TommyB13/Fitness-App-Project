@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
-import { Text, Group, Button, Modal, TextInput, Divider } from '@mantine/core';
+import { Title, Text, Group, Button, Modal, TextInput, Divider } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 
 import { useAuth } from 'models/auth';
@@ -44,9 +44,9 @@ function ProfilePage() {
 
 	return (
 		<div className={styles.profileLayout}>
-			<Text size="xl" mb="lg">
+			<Title order={2} mb="lg" mt="sm">
 				Profile
-			</Text>
+			</Title>
 			<img src={imageUrl} alt="avatar" onClick={openUploader} />
 			<ul>
 				<li>Name: {displayName}</li>
@@ -64,9 +64,7 @@ function ProfilePage() {
 
 			<Divider mt="lg" mb="lg" />
 
-			<Text size="xl" mb="lg">
-				My Posts
-			</Text>
+			<Title order={3}>My Posts</Title>
 			{myPosts.length === 0 ? (
 				<Text ta="center" size="lg" mt="lg">
 					No posts available.
