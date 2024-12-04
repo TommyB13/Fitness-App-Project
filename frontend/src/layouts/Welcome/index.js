@@ -3,6 +3,7 @@ import qs from 'qs';
 
 import { useAuth } from 'models/auth';
 import { useRouting } from 'models/routing';
+import { ReactComponent as Logo } from 'images/logo/logo.svg';
 
 import styles from './styles.module.scss';
 
@@ -11,20 +12,20 @@ function WelcomePage() {
 	const { code } = qs.parse(search, { ignoreQueryPrefix: true });
 	const [, { getIdToken, getAccessToken }] = useAuth();
 
-	async function asyncGetAccessToken() {
-		if (code) {
-			await getAccessToken(code);
-		}
-	}
-
 	useEffect(() => {
-		asyncGetAccessToken();
+		if (code) {
+			getAccessToken(code);
+		}
 	}, [code]);
 
 	return (
 		<div className={styles.welcomeLayout}>
-			<button type="button" onClick={getIdToken}>
-				Login
+			<div className={styles.logoWrapper}>
+				<Logo className={styles.logo} />
+				<h1>Fitness App</h1>
+			</div>
+			<button className={styles.ctaBtn} type="button" onClick={getIdToken}>
+				Let's go
 			</button>
 		</div>
 	);

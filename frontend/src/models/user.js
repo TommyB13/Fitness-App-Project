@@ -1,26 +1,50 @@
 import { createAction, handleActions } from 'redux-actions';
 import { createSelector } from 'reselect';
 
-import { logout } from 'models/auth';
 import { useRedux } from 'utils/hook/redux';
 import { wrapAuthFetch } from 'utils/api';
 
 export const defaultUserData = {
-	sub: '',
-	email_verified: false,
-	email: '',
-	username: '',
+	displayName: '',
+	imageUrl: '',
+	createdDate: '',
+	userId: '',
+	points: 0,
+	challenges: [],
+	consecutiveDays: 0,
+	firstLogin: false,
+	name: '',
 };
 
-export const getUser = createAction('FETCH_USER', () => async dispatch => {
-	const { status, data } = await wrapAuthFetch('oauth2/userInfo', {
-		method: 'GET',
+export const getUser = createAction('FETCH_USER', () => async () => {
+	const { data } = await wrapAuthFetch(
+		'me', // 'oauth2/userInfo',
+		{
+			method: 'GET',
+		},
+		{},
+		// true,
+	);
+
+	return data;
+});
+
+export const updateUser = createAction('UPDATE_USER', form => async dispatch => {
+	const { data } = await wrapAuthFetch('me', {
+		method: 'PUT',
+		body: JSON.stringify(form),
 	});
 
-	if (status !== 200) {
-		console.error(data.error_description);
-		dispatch(logout());
-	}
+	await dispatch(getUser());
+
+	return data;
+});
+
+export const createUser = createAction('CREATE_USER', () => async () => {
+	const { data } = await wrapAuthFetch('users', {
+		method: 'POST',
+		body: JSON.stringify({}),
+	});
 
 	return data;
 });
@@ -58,7 +82,9 @@ const selectUserData = createSelector(
 
 export const useUserData = () =>
 	useRedux(selectUserData, {
+		createUser,
 		getUser,
+		updateUser,
 	});
 
 export default { reducer };

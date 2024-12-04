@@ -7,8 +7,12 @@ import ProtectedRoute from 'utils/hoc/ProtectedRoute';
 import App from 'layouts/App';
 import { WelcomePage } from 'layouts/Welcome';
 import { HomePage } from 'layouts/Home';
-import { NewPost } from 'layouts/New';
+import NewPost from 'layouts/New';
 import { ProfilePage } from 'layouts/Profile';
+import { PostDetail } from 'layouts/PostDetail';
+import ChallengesPage from 'layouts/ChallengesPage';
+import ChallengeDetail from 'layouts/ChallengeDetails';
+// import { MarketPage } from 'layouts/Market';
 
 import Header from 'components/organisms/Header';
 import Navigation from 'components/organisms/Navigation';
@@ -45,6 +49,14 @@ function AppRoutes() {
 						}
 					/>
 					<Route
+						path={`${routePath.post}/:post-id`}
+						element={
+							<ProtectedRoute>
+								<PostDetail />
+							</ProtectedRoute>
+						}
+					/>
+					<Route
 						path={routePath.new}
 						element={
 							<ProtectedRoute>
@@ -60,6 +72,38 @@ function AppRoutes() {
 							</ProtectedRoute>
 						}
 					/>
+					<Route
+						path={`${routePath.myPost}/:post-id`}
+						element={
+							<ProtectedRoute>
+								<PostDetail />
+							</ProtectedRoute>
+						}
+					/>
+					<Route
+						path={routePath.challenge}
+						element={
+							<ProtectedRoute>
+								<ChallengesPage />
+							</ProtectedRoute>
+						}
+					/>
+					<Route
+						path={`${routePath.challenge}/:challenge-id`}
+						element={
+							<ProtectedRoute>
+								<ChallengeDetail />
+							</ProtectedRoute>
+						}
+					/>
+					{/* <Route
+						path={routePath.market}
+						element={
+							<ProtectedRoute>
+								<MarketPage />
+							</ProtectedRoute>
+						}
+					/> */}
 				</Routes>
 			</App>
 		</RouterWrapper>

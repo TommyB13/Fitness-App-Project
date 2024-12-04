@@ -1,0 +1,35 @@
+.wrapper {
+	display: flex;
+	align-content: center;
+	justify-content: center;
+	width: 100%;
+	margin: auto;
+	margin-top: -45px;
+	padding-bottom: 16px;
+
+	&.goBack {
+		transition: all 0.3s ease;
+	}
+
+	& > svg {
+		width: 40px;
+		height: 40px;
+
+		& > path {
+			color: #525252;
+		}
+
+		&.showAnimation {
+			animation: rotate 1s linear infinite;
+		}
+	}
+}
+
+@keyframes rotate {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}

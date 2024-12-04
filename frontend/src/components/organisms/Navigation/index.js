@@ -7,7 +7,7 @@ import routePath from 'constants/path';
 import { ReactComponent as HomeIcon } from 'images/icon/Home.svg';
 import { ReactComponent as ChallengeIcon } from 'images/icon/Challenge.svg';
 import { ReactComponent as NewIcon } from 'images/icon/New.svg';
-import { ReactComponent as MarketIcon } from 'images/icon/Market.svg';
+// import { ReactComponent as MarketIcon } from 'images/icon/Market.svg';
 import { ReactComponent as ProfileIcon } from 'images/icon/Profile.svg';
 
 import styles from './styles.module.scss';
@@ -35,16 +35,16 @@ function Navigation() {
 		},
 		{
 			title: 'New',
-			link: routePath.new, // Ensure this is correctly set
+			link: routePath.new,
 			icon: NewIcon,
 			isActive: currentPathname.includes('/new'),
 		},
-		{
-			title: 'Market',
-			link: routePath.market,
-			icon: MarketIcon,
-			isActive: currentPathname.includes('/market'),
-		},
+		// {
+		// 	title: 'Market',
+		// 	link: routePath.market,
+		// 	icon: MarketIcon,
+		// 	isActive: currentPathname.includes('/market'),
+		// },
 		{
 			title: 'Profile',
 			link: routePath.profile,

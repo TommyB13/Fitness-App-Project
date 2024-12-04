@@ -1,0 +1,7 @@
+.marketWrapper {
+	display: flex;
+	flex-direction: column;
+	margin-top: 64px;
+	height: calc(100vh - 64px - 100px);
+	align-items: center;
+}

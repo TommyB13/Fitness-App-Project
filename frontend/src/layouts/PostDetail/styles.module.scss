@@ -13,13 +13,29 @@ $shadow: rgba(0, 0, 0, 0.1);
 	display: flex;
 	flex-direction: column;
 	margin-top: 64px;
-	height: calc(100vh - 64px - 100px);
 	padding: 8px 16px;
+	height: calc(100vh - 64px - 100px);
 	overflow-y: scroll;
+	position: relative;
 
 	@media (min-width: $media-phone) {
 		margin-top: 0;
 		height: 100vh;
+	}
+
+	& > a {
+		position: fixed;
+		top: 14px;
+
+		@media (min-width: $media-phone) {
+			top: 24px;
+		}
+	}
+
+	& > p {
+		max-width: 450px;
+		width: 100%;
+		margin: auto;
 	}
 }
 
@@ -93,14 +109,13 @@ $shadow: rgba(0, 0, 0, 0.1);
 
 .post {
 	margin-top: 20px;
-	padding: 20px;
-	border: 1px solid $border;
+	// padding: 20px;
+	// border: 1px solid $border;
 	border-radius: 8px;
-	background-color: $background;
+	// background-color: $background;
 	max-width: 600px;
-	width: 100%;
-	margin: 0 auto 20px auto;
-	box-shadow: 0 4px 8px $shadow;
+	margin: 20px auto;
+	// box-shadow: 0 4px 8px $shadow;
 }
 
 .postHeader {
@@ -165,4 +180,31 @@ $shadow: rgba(0, 0, 0, 0.1);
 	background-color: $background;
 	border-top: 1px solid $border;
 	box-shadow: 0 -2px 4px $shadow;
+}
+
+.commentWrapper {
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+	padding-bottom: 80px;
+	max-width: 450px;
+	width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+
+	& .comment {
+		display: flex;
+		// align-items: center;
+		width: 100%;
+	}
+
+	& .commentInputWrapper {
+		display: flex;
+		gap: 8px;
+		align-items: center;
+
+		& .commentInput {
+			flex: 1;
+		}
+	}
 }

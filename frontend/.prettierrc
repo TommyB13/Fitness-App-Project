@@ -3,7 +3,7 @@
 	"singleQuote": true,
 	"trailingComma": "all",
 	"arrowParens": "avoid",
-	"printWidth": 1000,
+	"printWidth": 120,
 	"proseWrap": "never",
 	"overrides": [
 		{
