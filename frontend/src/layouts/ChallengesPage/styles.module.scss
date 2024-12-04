@@ -1,3 +1,6 @@
+@import 'styles/color.scss';
+@import 'styles/media.scss';
+
 $primary: #007bff;
 $primaryHover: #0056b3;
 $border: #ddd;
@@ -6,174 +9,33 @@ $textSecondary: #666;
 $background: #fff;
 $shadow: rgba(0, 0, 0, 0.1);
 
-.homeLayout {
-	display: flex;
-	flex-direction: column;
-	margin-top: 64px;
-	height: calc(100vh - 64px - 100px);
-	padding: 8px 16px;
-	overflow: scroll;
-}
-
-.header {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	margin: 20px auto;
-	max-width: 600px;
-	padding: 20px;
-	border-bottom: 1px solid $border;
-}
-
-.newPostContainer {
-	margin: 20px auto;
-	max-width: 600px;
-	padding: 20px;
-	border: 1px solid $border;
-	border-radius: 8px;
-	background-color: $background;
-	box-shadow: 0 4px 8px $shadow;
-}
-
-.newPostForm {
-	display: flex;
-	flex-direction: column;
-}
-
-.newPostHeader {
-	display: flex;
-	align-items: center;
-	margin-bottom: 10px;
-}
-
-.profileImage {
-	width: 50px;
-	height: 50px;
-	border-radius: 50%;
-	margin-right: 10px;
-}
-
-.input,
-.textarea {
-	margin-bottom: 10px;
-	padding: 10px;
-	border: 1px solid $border;
-	border-radius: 4px;
-	font-size: 16px;
-	width: 100%;
-}
-
-.textarea {
-	resize: vertical;
-	height: 100px;
-}
-
-.button {
-	padding: 10px 20px;
-	border: none;
-	border-radius: 4px;
-	background-color: $primary;
-	color: $background;
-	font-size: 16px;
-	cursor: pointer;
-	align-self: flex-end;
-}
-
-.button:hover {
-	background-color: $primaryHover;
-}
-
-.post {
-	margin-top: 20px;
-	padding: 20px;
-	border: 1px solid $border;
-	border-radius: 8px;
-	background-color: $background;
-	max-width: 600px;
-	margin: 20px auto;
-	box-shadow: 0 4px 8px $shadow;
-}
-
-.postHeader {
-	display: flex;
-	align-items: center;
-	margin-bottom: 15px;
-}
-
-.profileImage {
-	width: 50px;
-	height: 50px;
-	border-radius: 50%;
-	margin-right: 10px;
-}
-
-.userInfo {
-	display: flex;
-	flex-direction: column;
-}
-
-.username {
-	font-size: 18px;
-	font-weight: bold;
-	color: $textPrimary;
-}
-
-.timestamp {
-	font-size: 14px;
-	color: $textSecondary;
-}
-
-.postImage {
-	width: 100%;
-	height: 300px; /* Fixed height */
-	object-fit: cover; /* Maintain aspect ratio and cover the area */
-	border-radius: 8px;
-	margin-bottom: 15px;
-}
-
-.postContent {
-	padding: 0 10px;
-}
-
-.postHeading {
-	font-size: 20px;
-	color: $textPrimary;
-	margin-bottom: 10px;
-}
-
-.postDescription {
-	font-size: 16px;
-	color: $textSecondary;
-}
-
-.footer {
-	position: fixed;
-	bottom: 0;
-	width: 100%;
-	display: flex;
-	justify-content: center;
-	padding: 10px;
-	background-color: $background;
-	border-top: 1px solid $border;
-	box-shadow: 0 -2px 4px $shadow;
-}
-
 .challengesLayout {
 	display: flex;
 	flex-direction: column;
+	width: 100%;
+	margin: auto;
+	margin-top: 64px;
+	height: calc(100vh - 64px - 100px);
 	padding: 16px;
+	overflow-y: scroll;
+
+	@media (min-width: $media-phone) {
+		margin-top: 0;
+		height: 100vh;
+		padding: 8px calc((100vw - 720px) / 2);
+	}
 }
 
 section {
 	margin-bottom: 32px;
-}
 
-h2 {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	font-size: 24px;
-	margin-bottom: 16px;
+	& h2 {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		font-size: 24px;
+		margin-bottom: 16px;
+	}
 }
 
 .challengeList {
@@ -185,14 +47,19 @@ h2 {
 .challengeCard {
 	border: 1px solid #ddd;
 	border-radius: 8px;
-	width: 200px;
+	width: 100%;
 	padding: 16px;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	cursor: pointer;
+
+	@media (min-width: $media-phone) {
+		width: 200px;
+	}
 }
 
 .imagePlaceholder {
 	display: flex;
-	height: 120px;
+	height: auto;
 	justify-content: center;
 	align-items: center;
 	align-self: stretch;
@@ -202,11 +69,14 @@ h2 {
 	width: 100%;
 	height: 100%;
 	object-fit: cover;
+	border-radius: 4px;
 }
 
 .info {
 	display: flex;
 	flex-direction: column;
+	align-items: flex-start;
+	padding: 8px 0;
 }
 
 .tag {
@@ -233,4 +103,3 @@ p {
 	font-size: 14px;
 	color: #666;
 }
-
