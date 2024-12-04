@@ -31,7 +31,7 @@ const ChallengesPage = () => {
 			</div>
 		</div>
 	);
-
+	const featuredChallenges = challenges.filter(c => c.isFeatured);
 	const workoutChallenges = challenges.filter(c => c.type === 'workout');
 	const dietChallenges = challenges.filter(c => c.type === 'diet');
 
@@ -39,7 +39,7 @@ const ChallengesPage = () => {
 		<div className={styles.challengesLayout}>
 			<section>
 				<h2>Featured Challenges</h2>
-				<div className={styles.challengeList}>{challenges.map(renderChallenge)}</div>
+				<div className={styles.challengeList}>{featuredChallenges.map(renderChallenge)}</div>
 			</section>
 			<section>
 				<h2>Workout Challenges</h2>
