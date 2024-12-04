@@ -26,18 +26,28 @@ const ChallengesPage = () => {
 			</div>
 			<div className={styles.info}>
 				<span className={styles.tag}>{challenge.type}</span>
-				<span className={styles.progress}>{challenge.percentage}%</span>
 				<h3>{challenge.title}</h3>
 				<p>{challenge.description}</p>
 			</div>
 		</div>
 	);
 
+	const workoutChallenges = challenges.filter(c => c.type === 'workout');
+	const dietChallenges = challenges.filter(c => c.type === 'diet');
+
 	return (
 		<div className={styles.challengesLayout}>
 			<section>
 				<h2>Featured Challenges</h2>
-				<div className={styles.challengeList}>{challenges.filter(c => c.isFeatured).map(renderChallenge)}</div>
+				<div className={styles.challengeList}>{challenges.map(renderChallenge)}</div>
+			</section>
+			<section>
+				<h2>Workout Challenges</h2>
+				<div className={styles.challengeList}>{workoutChallenges.map(renderChallenge)}</div>
+			</section>
+			<section>
+				<h2>Diet Challenges</h2>
+				<div className={styles.challengeList}>{dietChallenges.map(renderChallenge)}</div>
 			</section>
 		</div>
 	);
